@@ -18,7 +18,7 @@
 -- 10. Example output for a workflow task: WKF11624100000001
 -- =================================
 
--- USE demo_database;
+-- USE zms_database;
 
 DROP PROCEDURE IF EXISTS generate_reference_number;
 

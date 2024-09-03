@@ -4,7 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>aspnet-auth_workflow_demo-377F59A8-C435-4922-BB61-E5A711FF24CB</UserSecretsId>
+        <UserSecretsId>e9660e11-bed4-4328-8e31-f68312e308ff</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
