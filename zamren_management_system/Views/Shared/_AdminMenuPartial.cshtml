@@ -1,0 +1,119 @@
+@using zamren_management_system.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@* @using Microsoft.Extensions.Configuration *@
+@using Microsoft.Extensions.Configuration
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IConfiguration Configuration
+@inject UserManager<ApplicationUser> UserManager
+
+@{ var user = await UserManager.GetUserAsync(User); }
+@if (user != null && SignInManager.IsSignedIn(User))
+{
+    @if (await UserManager.IsInRoleAsync(user, Configuration["DefaultUserRoles:AdminRole"] ?? string.Empty))
+    {
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Security</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="User"
+                           asp-action="Index">
+                            Users
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Role"
+                           asp-action="Index">
+                            Roles
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Privilege"
+                           asp-action="Index">
+                            Privileges
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Module"
+                           asp-action="Index">
+                            Modules
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Workflow</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Process"
+                           asp-action="Index">
+                            Processes
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Workflow"
+                           asp-action="Tasks">
+                            Tasks
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Organizational Units</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Organization"
+                           asp-action="Index">
+                            Organizations
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Branch"
+                           asp-action="Index">
+                            Branches
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Department"
+                           asp-action="Index">
+                            Departments
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Office"
+                           asp-action="Index">
+                            Offices
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Demo</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Demo"
+                           asp-action="Index">
+                            File Upload
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Membership</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="UserDetail"
+                           asp-action="Index">
+                            View Members
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    }
+}

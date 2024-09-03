@@ -1,0 +1,26 @@
+﻿@using zamren_management_system.Areas.Identity.Data
+@using zamren_management_system.Areas.Security.Models
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Configuration
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IConfiguration Configuration;
+@inject UserManager<ApplicationUser> UserManager
+@{
+    if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result!, Configuration["DefaultUserRoles:AdminRole"] ?? string.Empty))
+    {
+        Layout = "/Areas/Admin/Views/Shared/_Layout.cshtml";
+    }
+    else if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result!, Configuration["DefaultUserRoles:EmployeeRole"] ?? string.Empty))
+    {
+        Layout = "/Areas/Backoffice/Views/Shared/_Layout.cshtml";
+    }
+    else if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result!, Configuration["DefaultUserRoles:ClientRole"] ?? string.Empty))
+    {
+        Layout = "/Areas/Client/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "/Views/Shared/_Layout.cshtml";
+    }
+}

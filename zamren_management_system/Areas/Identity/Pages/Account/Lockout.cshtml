@@ -1,0 +1,16 @@
+﻿@page
+@* @using Microsoft.Extensions.Configuration *@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration;
+@model LockoutModel
+@{
+    ViewData["Title"] = "Locked out";
+}
+
+@{ var supportEmailAddress = Configuration["SystemContactDetails:SupportEmailAddress"]; }
+
+
+<header>
+    <h1 class="text-danger">@ViewData["Title"]</h1>
+    <p class="text-danger">This account has been locked out, please <a href="mailto:@supportEmailAddress">contact us</a> to unlock your account.</p>
+</header>

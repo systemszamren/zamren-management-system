@@ -1,0 +1,29 @@
+@using zamren_management_system.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@* @using Microsoft.Extensions.Configuration *@
+@using Microsoft.Extensions.Configuration
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IConfiguration Configuration
+@inject UserManager<ApplicationUser> UserManager
+
+@{ var user = await UserManager.GetUserAsync(User); }
+@if (user != null && SignInManager.IsSignedIn(User))
+{
+    @if (await UserManager.IsInRoleAsync(user, Configuration["DefaultUserRoles:EmployeeRole"] ?? string.Empty))
+    {
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Procurement</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Procurement" asp-controller="PurchaseRequisition"
+                           asp-action="InitiatePurchaseRequisition">
+                            Purchase Requisition Form (PRF)
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    }
+}

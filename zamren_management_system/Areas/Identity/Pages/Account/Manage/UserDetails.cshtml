@@ -1,0 +1,271 @@
+﻿@page
+@model UserDetailsModel
+@{
+    ViewData["Title"] = "User Details";
+    ViewData["ActivePage"] = ManageNavPages.UserDetails;
+}
+
+@* <h3>User Details</h3> *@
+@* <p>User ID: @Model.UserId</p> *@
+
+<form id="edit-user-details-form" enctype="multipart/form-data" class="row">
+<div class="col-md-12">
+    @*progress bar*@
+    <div class="progress mb-3">
+        <div class="progress-bar progress-bar-striped" style="width:0">0%</div>
+    </div>
+</div>
+<!-- User Details -->
+<div class="col-md-6">
+    <h3>User Details</h3>
+    <div class="mb-3 form-floating">
+        <select class="form-select" id="gender" name="gender" aria-label="Gender">
+            <option value="">- Select -</option>
+        </select>
+        <label for="gender">Gender</label>
+    </div>
+
+    <div class="mb-3">
+        <label>Date of Birth</label>
+        <div class="input-group date" id="dateOfBirth">
+            <input type="text" class="form-control" name="dateOfBirth"/>
+            <span class="input-group-append">
+                <span class="input-group-text bg-light d-block">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <select class="form-select" id="identityType" name="identityType" aria-label="Identity Type">
+            <option value="">- Select -</option>
+        </select>
+        <label for="identityType">Identity Type</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="identityNumber" name="identityNumber" placeholder="Identity Number">
+        <label for="identityNumber">Identity Number</label>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="countryCode">Country</label><br>
+        <select class="form-select" style="width: 100%;" data-default="Zambia" name="countryCode" id="countryCode" aria-label="Country Code">
+        </select>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="city" name="city" placeholder="City">
+        <label for="city">City</label>
+    </div>
+
+    <div class="mb-3 form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <div class="input-group">
+            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="+260...">
+            <span class="input-group-text bg-white phoneNumberVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyPhoneNumberBtn" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 form-group">
+        <label for="alternativePhoneNumber">Alternative Phone Number</label>
+        <div class="input-group">
+            <input type="tel" class="form-control" id="alternativePhoneNumber" name="alternativePhoneNumber" placeholder="+260...">
+            <span class="input-group-text bg-white alternativePhoneNumberVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyAlternativePhoneNumberBtn" disabled="disabled" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 form-group">
+        <label for="alternativeEmailAddress">Alternative Email Address</label>
+        <div class="input-group">
+            <input type="email" class="form-control" id="alternativeEmailAddress" name="alternativeEmailAddress" placeholder="jane@example.com">
+            <span class="input-group-text bg-white alternativeEmailAddressVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyAlternativeEmailAddressBtn" disabled="disabled" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="identityAttachment">Identity Attachment</label><br>
+        <div class="input-group">
+            <input type="file" class="form-control" id="identityAttachment" name="identityAttachment" accept=".png,.jpg,.jpeg,.pdf">
+            <button class="btn btn-outline-secondary previewIdentityAttachmentBtn" disabled="disabled" type="button" data-label="Identity Attachment">Preview</button>
+        </div>
+        <input type="hidden" name="identityAttachmentId"/>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <textarea class="form-control" id="physicalAddress" name="physicalAddress" placeholder="Physical Address" style="height: 100px"></textarea>
+        <label for="physicalAddress">Physical Address</label>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="proofOfResidencyAttachment">Proof of Residency Attachment</label><br>
+        <div class="input-group">
+            <input type="file" class="form-control" id="proofOfResidencyAttachment" name="proofOfResidencyAttachment" accept=".png,.jpg,.jpeg,.pdf">
+            <button class="btn btn-outline-secondary previewProofOfResidencyAttachmentBtn" disabled="disabled" type="button" data-label="Proof of Residency Attachment">Preview</button>
+        </div>
+    </div>
+</div>
+
+<!-- Next of Kin Details -->
+<div class="col-md-6">
+    <h3>Next of Kin's Details</h3>
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="nextOfKinFirstName" name="nextOfKinFirstName" placeholder="Next of Kin First Name">
+        <label for="nextOfKinFirstName">Next of Kin's First Name</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="nextOfKinLastName" name="nextOfKinLastName" placeholder="Next of Kin Last Name">
+        <label for="nextOfKinLastName">Next of Kin's Last Name</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <select class="form-select" id="nextOfKinIdentityType" name="nextOfKinIdentityType" aria-label="Next of Kin Identity Type">
+            <option value="">- Select -</option>
+        </select>
+        <label for="nextOfKinIdentityType">Next of Kin's Identity Type</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="nextOfKinIdentityNumber" name="nextOfKinIdentityNumber" placeholder="Next of Kin Identity Number">
+        <label for="nextOfKinIdentityNumber">Next of Kin's Identity Number</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <textarea class="form-control" id="nextOfKinPhysicalAddress" name="nextOfKinPhysicalAddress" placeholder="Next of Kin Physical Address" style="height: 100px"></textarea>
+        <label for="nextOfKinPhysicalAddress">Next of Kin's Physical Address</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <select class="form-select" id="nextOfKinGender" name="nextOfKinGender" aria-label="Next of Kin Gender">
+            <option value="">- Select -</option>
+        </select>
+        <label for="nextOfKinGender">Next of Kin's Gender</label>
+    </div>
+
+    <div class="mb-3 form-group" style="width: 100%">
+        <label for="nextOfKinPhoneNumber">Next of Kin's Phone Number</label>
+        <div class="input-group">
+            <input type="tel" class="form-control" id="nextOfKinPhoneNumber" name="nextOfKinPhoneNumber" placeholder="+260...">
+            <span class="input-group-text bg-white nextOfKinPhoneNumberVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyNextOfKinPhoneNumberBtn" disabled="disabled" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="nextOfKinCountryCode">Next of Kin's Country</label><br>
+        <select class="form-select" style="width: 100%;" data-default="Zambia" name="nextOfKinCountryCode" id="nextOfKinCountryCode" aria-label="Next of Kin Country Code">
+        </select>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="nextOfKinCity" name="nextOfKinCity" placeholder="Next of Kin City">
+        <label for="nextOfKinCity">Next of Kin's City</label>
+    </div>
+
+    <div class="mb-3 form-group">
+        <label for="nextOfKinEmailAddress">Next of Kin's Email Address</label>
+        <div class="input-group">
+            <input type="email" class="form-control" id="nextOfKinEmailAddress" name="nextOfKinEmailAddress" placeholder="john@example.com">
+            <span class="input-group-text bg-white nextOfKinEmailAddressVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyNextOfKinEmailAddressBtn" disabled="disabled" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="nextOfKinProofOfResidencyAttachment">Next of Kin Proof of Residency Attachment</label><br>
+        <div class="input-group">
+            <input type="file" class="form-control" id="nextOfKinProofOfResidencyAttachment" name="nextOfKinProofOfResidencyAttachment" placeholder="" accept=".png,.jpg,.jpeg,.pdf">
+            <button class="btn btn-outline-secondary previewNextOfKinProofOfResidencyAttachmentBtn" disabled="disabled" type="button" value="" data-label="Next of Kin Proof of Residency Attachment">Preview</button>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="nextOfKinIdentityAttachment">Next of Kin Identity Attachment</label><br>
+        <div class="input-group">
+            <input type="file" class="form-control" id="nextOfKinIdentityAttachment" name="nextOfKinIdentityAttachment" accept=".png,.jpg,.jpeg,.pdf">
+            <button class="btn btn-outline-secondary previewNextOfKinIdentityAttachmentBtn" disabled="disabled" type="button" data-label="Next of Kin Identity Attachment">Preview</button>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="termsOfUseAccepted" name="termsOfUseAccepted">
+    <label class="form-check-label" for="termsOfUseAccepted">Terms of Use Accepted</label>
+</div>
+
+<div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="privacyPolicyAccepted" name="privacyPolicyAccepted">
+    <label class="form-check-label" for="privacyPolicyAccepted">Privacy Policy Accepted</label>
+</div>
+
+<input type="hidden" name="userDetailId"/>
+<input type="hidden" name="userId"/>
+
+<button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+
+<div class="modal fade" id="previewAttachmentModal" tabindex="-1" aria-labelledby="previewAttachmentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="min-height: 100vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewAttachmentModalLabel">Attachment Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <iframe id="attachmentPreview" src="" width="100%" style="height: 100vh"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="previewImageModal" tabindex="-1" aria-labelledby="previewImageModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="min-height: 100vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewImageModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="imagePreview" src="" width="100%" height="100%" alt="image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @*get constants*@
+    <script src="~/js/common/select.genders.js"></script>
+    <script src="~/js/common/select.identity.types.js"></script>
+    <script src="~/js/common/select.countries.js"></script>
+
+    @*user-details*@
+    <script src="~/js/client/user/get.user.details.js"></script>
+    <script src="~/js/client/user/preview.user.attachments.js"></script>
+    <script src="~/js/client/user/edit.user.details.js"></script>
+
+
+    @*verify emails and phone numbers*@
+    <script src="~/js/client/user/verify.phone.number.js"></script>
+    <script src="~/js/client/user/verify.email.address.js"></script>
+
+}

@@ -1,0 +1,29 @@
+.container-profile-pic {
+    width: 150px;
+    height: 150px;
+}
+
+.photo-preview, .photo-preview-client-view {
+    background-image: url(../img/temp/default-profile-picture.png);
+    background-size: cover;
+    background-position: center;
+}
+
+.middle-profile-pic {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.container-profile-pic:hover .middle-profile-pic {
+    display: flex !important;
+    cursor: pointer;
+}
+
+.profile-pic-input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}

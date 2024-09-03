@@ -1,0 +1,129 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /*margin-bottom: 60px;*/
+}
+
+/*CSS for the phone number input*/
+.intl-tel-input .selected-flag {
+    z-index: 4;
+}
+
+.select2-container .select2-selection--single {
+    height: 40px;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    height: 40px;
+}
+
+footer {
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    height: 50px;
+    padding-top: 15px;
+    width: 100%;
+    background-color: #f5f5f5;
+}
+
+.hide {
+    display: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/*
+.btn:focus {
+    box-shadow: none !important;
+}*/
+
+.chat-box {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.chat-message {
+    margin-bottom: 1rem;
+    border: 1px solid #b8b8b8;
+    /*padding: 0.8rem;*/
+}
+
+.chat-step-name {
+    font-size: x-small;
+    border: 1px solid lightgray;
+    color: GrayText;
+}
+
+.chat-step-action {
+    font-size: x-small;
+}
+
+.chat-step-action-success {
+    font-size: x-small;
+    border: 1px solid darkgreen;
+    color: darkgreen;
+}
+
+.chat-step-action-rejected {
+    font-size: x-small;
+    border: 1px solid darkred;
+    color: darkred;
+}
+
+.chat-step-action-sent-back {
+    font-size: x-small;
+    border: 1px solid darkorange;
+    color: darkorange;
+}
+
+.chat-footer {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #dee2e6;
+    padding-top: 0.5rem;
+    margin-top: 1rem;
+}
+
+.chat-footer input[type="text"] {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+}
+
+.chat-most-recent {
+    background: white;
+}
+
+.chat-step-attachment {
+    font-size: x-small;
+    border: 1px solid darkblue;
+    color: darkblue;
+}
+
+.font-x-small {
+    font-size: x-small;
+}
