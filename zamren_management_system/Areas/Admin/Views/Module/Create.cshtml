@@ -1,0 +1,45 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Create New Module";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Module" asp-action="Index">Modules</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Create</li>
+    </ol>
+</nav>
+
+<h1>CREATE MODULE</h1>
+<hr>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Create Module</h4>
+        <form id="create-module-form" class="mt-3">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="name" name="name" placeholder="e.g WORKFLOW">
+                <label for="name">Module Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="code" name="code" placeholder="e.g WKF">
+                <label for="code">Module Code</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter module description"></textarea>
+                <label for="description">Module Description</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/security/module/create.module.js"></script>
+}

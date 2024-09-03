@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Tasks";
+    Layout = "_Layout";
+}
+
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Tasks</li>
+    </ol>
+</nav>
+
+<h1>WORKFLOW TASKS</h1>
+<hr>
+
+<table id="tasks-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Reference</th>
+        <th>Process</th>
+        <th>Step</th>
+        <th>Status</th>
+        <th>Current User</th>
+        <th>Date Initiated</th>
+        <th>Initiator</th>
+        <th>Previous User</th>
+        <th>Parent Task</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Reference</th>
+        <th>Process</th>
+        <th>Step</th>
+        <th>Status</th>
+        <th>Current User</th>
+        <th>Date Initiated</th>
+        <th>Initiator</th>
+        <th>Previous User</th>
+        <th>Parent Task</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/workflow/tasks/get.all.tasks.dt.js"></script>
+}

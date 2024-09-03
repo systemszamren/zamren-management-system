@@ -1,0 +1,77 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Edit Branch";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Branch" asp-action="Index">Branches</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+
+<h1>EDIT BRANCH</h1>
+<hr>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form id="edit-branch-form" class="mt-3">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter branch name">
+                <label for="name">Branch Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter branch description" style="height: 100px"></textarea>
+                <label for="description">Branch Description</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currentOrganizationName" name="currentOrganizationName" readonly="readonly">
+                <label for="currentOrganizationName">Current Organization</label>
+            </div>
+            <div class="form-group mb-3">
+                <label for="organizationId" class="control-label">Change Organization</label><br>
+                <select class="form-control organizationId-select2" id="organizationId" name="organizationId">
+                </select>
+            </div>
+            <input type="hidden" id="id" name="id"/>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+
+    </div>
+</div>
+
+<br>
+<br>
+
+<h4>MANAGE DEPARTMENTS</h4>
+<table id="branch-departments-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Department</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Department</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/branch/get.branch.data.js"></script>
+    <script src="~/js/security/branch/get.departments.in.branch.dt.js"></script>
+    <script src="~/js/security/branch/edit.branch.js"></script>
+}

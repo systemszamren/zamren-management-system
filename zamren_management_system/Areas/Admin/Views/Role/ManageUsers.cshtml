@@ -1,0 +1,98 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Manage Role Users";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Role" asp-action="Index">Roles</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a class="edit-role-link" asp-area="Admin" asp-controller="Role" asp-action="Edit">Edit</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Manage Users</li>
+    </ol>
+</nav>
+
+<h1>MANAGE ROLE USERS</h1>
+<h4>Role Name: <span class="roleName"></span></h4>
+<hr>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="add-user-to-role-form">
+            <div class="form-group mb-3">
+                <label for="userId" class="">Add User to Role</label><br>
+                <select class="form-control userId-select2" id="userId" name="userId">
+                </select>
+
+                <div class="mb-3 mt-3">
+                    <label>Start Date (Tenure)</label>
+                    <div class="input-group date" id="startDate">
+                        <input type="text" class="form-control" name="startDate"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>End Date (Tenure)</label>
+                    <div class="input-group date" id="endDate">
+                        <input type="text" class="form-control" name="endDate"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <input type="hidden" name="currentRoleId"/>
+                <button class="btn btn-primary addUserToRoleBtn" disabled="disabled" type="submit">Add User to Role</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br>
+<br>
+
+<table id="role-users-table2" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>StartDate</th>
+        <th>EndDate</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>StartDate</th>
+        <th>EndDate</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/common/init.start.end.datepicker.js"></script>
+    <script src="~/js/security/role/get.role.data.js"></script>
+    <script src="~/js/security/role/get.users.not.in.role.select2.js"></script>
+    <script src="~/js/security/role/get.users.in.role.dt2.js"></script>
+    <script src="~/js/security/role/remove.user.from.role.js"></script>
+    <script src="~/js/security/role/add.user.to.role.js"></script>
+}

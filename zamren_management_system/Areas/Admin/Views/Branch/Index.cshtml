@@ -1,0 +1,47 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Branches";
+    Layout = "_Layout";
+}
+
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Branches</li>
+    </ol>
+</nav>
+
+<h1>BRANCHES</h1>
+<hr>
+
+<table id="branches-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Branch</th>
+        <th>Organization</th>
+        <th>Description</th>
+        <th>No. of Departments</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Branch</th>
+        <th>Organization</th>
+        <th>Description</th>
+        <th>No. of Departments</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/branch/get.all.branches.dt.js"></script>
+    <script src="~/js/security/branch/delete.branch.js"></script>
+    <script src="~/js/security/branch/count.branch.departments.js"></script>
+}

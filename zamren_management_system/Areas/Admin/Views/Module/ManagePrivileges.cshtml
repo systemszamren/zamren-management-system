@@ -1,0 +1,68 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Manage Module Privileges";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Module" asp-action="Index">Modules</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a class="edit-module-link" asp-area="Admin" asp-controller="Module" asp-action="Edit">Edit</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Manage Privileges</li>
+    </ol>
+</nav>
+
+<h1>MANAGE MODULE PRIVILEGES</h1>
+<h4>Module Name: <span class="moduleName"></span></h4>
+<hr>
+
+<div class="row">
+    <div class="col-md-8">
+        <form id="add-privilege-to-module-form">
+            <label for="privilegeId" class="">Add Privilege to Module</label>
+            <div class="input-group mb-3">
+                <select class="form-control privilegeId-select2" id="privilegeId" name="privilegeId" style="width: 70%">
+                </select>
+                <input type="hidden" name="currentModuleId"/>
+                <button class="btn btn-primary addPrivilegeToModuleBtn" disabled="disabled" type="submit">Add Privilege</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br>
+<br>
+
+<table id="module-privileges-table2" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Privilege</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Privilege</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/module/get.module.data.js"></script>
+    <script src="~/js/security/module/get.privileges.not.in.module.select2.js"></script>
+    <script src="~/js/security/module/get.privileges.in.module.dt2.js"></script>
+    <script src="~/js/security/module/remove.privilege.from.module.js"></script>
+    <script src="~/js/security/module/add.privilege.to.module.js"></script>
+}

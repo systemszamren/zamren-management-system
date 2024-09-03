@@ -1,0 +1,71 @@
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Users</li>
+    </ol>
+</nav>
+
+<h1>All Users</h1>
+
+<table id="users-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>Type</th>
+        @* <th>PhoneNumber</th> *@
+        @* <th>UserName</th> *@
+        <th>Recent Activity</th>
+        @* <th>EmailConfirmed</th> *@
+        @* <th>PhoneNumberConfirmed</th> *@
+        @* <th>TwoFactorEnabled</th> *@
+        @* <th>LockoutEnd</th> *@
+        @* <th>LockoutEnabled</th> *@
+        @* <th>AccessFailedCount</th> *@
+        @* <th>AccountCreatedDate</th> *@
+        @* <th>LastSuccessfulLoginDate</th> *@
+        @* <th>LastSuccessfulPasswordChangeDate</th> *@
+        @* <th>AccountDeletionScheduledDate</th> *@
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>Type</th>
+        @* <th>PhoneNumber</th> *@
+        @* <th>UserName</th> *@
+        <th>Recent Activity</th>
+        @* <th>EmailConfirmed</th> *@
+        @* <th>PhoneNumberConfirmed</th> *@
+        @* <th>TwoFactorEnabled</th> *@
+        @* <th>LockoutEnd</th> *@
+        @* <th>LockoutEnabled</th> *@
+        @* <th>AccessFailedCount</th> *@
+        @* <th>AccountCreatedDate</th> *@
+        @* <th>LastSuccessfulLoginDate</th> *@
+        @* <th>LastSuccessfulPasswordChangeDate</th> *@
+        @* <th>AccountDeletionScheduledDate</th> *@
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+
+@section Scripts {
+    <script src="~/js/security/user/get.users.dt.js"></script>
+}

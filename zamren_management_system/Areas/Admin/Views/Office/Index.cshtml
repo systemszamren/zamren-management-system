@@ -1,0 +1,46 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Offices";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Offices</li>
+    </ol>
+</nav>
+
+<h1>OFFICES</h1>
+<hr>
+
+<table id="offices-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Office</th>
+        <th>Department</th>
+        <th>Description</th>
+        <th>No. of Users</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Office</th>
+        <th>Department</th>
+        <th>Description</th>
+        <th>No. of Users</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/office/get.all.offices.dt.js"></script>
+    <script src="~/js/security/office/delete.office.js"></script>
+    <script src="~/js/security/office/count.office.users.js"></script>
+}

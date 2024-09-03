@@ -1,0 +1,136 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Edit Role";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Role" asp-action="Index">Roles</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+
+<h1>ROLE: <span class="roleName"></span></h1>
+<hr>
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-edit-role-tab" data-bs-toggle="pill" href="#pills-edit-role"
+                   role="tab" aria-controls="pills-edit-role" aria-selected="true">
+                    Edit Role
+                </a>
+                <a class="nav-link" id="v-pills-role-users-tab" data-bs-toggle="pill" href="#pills-role-users"
+                   role="tab" aria-controls="pills-role-users" aria-selected="false">
+                    Role Users
+                </a>
+                <a class="nav-link" id="v-pills-role-privileges-tab" data-bs-toggle="pill" href="#pills-role-privileges"
+                   role="tab" aria-controls="pills-role-privileges" aria-selected="false">
+                    Role Privileges
+                </a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-edit-role" role="tabpanel"
+                     aria-labelledby="v-pills-edit-role-tab">
+                    <h3>Edit Role</h3>
+                    <form id="edit-role-form">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" for="name" id="name" name="name" placeholder="Edit Role Name">
+                            <label for="name">Edit Role Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" for="description" id="description" name="description"
+                                placeholder="Edit Role Description"></textarea>
+                            <label for="description">Edit Role Description</label>
+                        </div>
+                        <input type="hidden" name="id"/>
+                        <button class="btn btn-primary" type="submit">Save Changes</button>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="pills-role-users" role="tabpanel"
+                     aria-labelledby="v-pills-role-users-tab">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>ROLE USERS</h4>
+                            <table id="role-users-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>FullName</th>
+                                    @* <th>FirstName</th> *@
+                                    @* <th>LastName</th> *@
+                                    <th>Email</th>
+                                    <th>StartDate</th>
+                                    <th>EndDate</th>
+                                    <th>Status</th>
+                                    @* <th>Action</th> *@
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>FullName</th>
+                                    @* <th>FirstName</th> *@
+                                    @* <th>LastName</th> *@
+                                    <th>Email</th>
+                                    <th>StartDate</th>
+                                    <th>EndDate</th>
+                                    <th>Status</th>
+                                    @* <th>Action</th> *@
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="pills-role-privileges" role="tabpanel"
+                     aria-labelledby="v-pills-role-privileges-tab">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>ROLE PRIVILEGES</h4>
+                            <table id="role-privileges-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Privilege</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Privilege</th>
+                                    <th>Description</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/security/role/init.components.in.edit.js"></script>
+    <script src="~/js/security/role/get.role.data.js"></script>
+    <script src="~/js/security/role/get.users.in.role.dt1.js"></script>
+    <script src="~/js/security/privilege/get.privileges.in.role.dt.js"></script>
+    <script src="~/js/security/role/edit.role.js"></script>
+    <script src="~/js/security/role/toggle.nav.tabs.js"></script>
+}

@@ -1,0 +1,47 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Modules";
+    Layout = "_Layout";
+}
+
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Modules</li>
+    </ol>
+</nav>
+
+<h1>MODULES</h1>
+<hr>
+
+<table id="modules-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Module</th>
+        <th>Code</th>
+        <th>Description</th>
+        <th>No. of Privileges</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Module</th>
+        <th>Code</th>
+        <th>Description</th>
+        <th>No. of Privileges</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/module/get.all.modules.dt.js"></script>
+    <script src="~/js/security/module/delete.module.js"></script>
+    <script src="~/js/security/module/count.module.privileges.js"></script>
+}

@@ -1,0 +1,168 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Task";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a class="edit-process-link" asp-area="Admin" asp-controller="Workflow" asp-action="Tasks">Tasks</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Task</li>
+    </ol>
+</nav>
+
+<h1>WORKFLOW TASK</h1>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active bold" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Task Details</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link bold" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Task Logs</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link bold" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Child Tasks</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+
+    <div class="tab-pane fade show active row mt-4" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+        <div class="col-md-8">
+
+            <div class="taskAlerts">
+                <div class="alert alert-info" role="alert">
+                    <strong>Task Status:</strong> Below are the details of the selected task
+                </div>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="taskReference" name="taskReference" placeholder="Task Reference" readonly>
+                <label for="taskReference">Task Reference</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="parentTaskReference" name="parentTaskReference" placeholder="Parent Task Reference" readonly>
+                <label for="parentTaskReference">Parent Task Reference</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currentProcessName" name="currentProcessName" placeholder="Current Process Name" readonly>
+                <label for="currentProcessName">Process Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currentProcessStartDate" name="currentProcessStartDate" placeholder="Current Process Start Date" readonly>
+                <label for="currentProcessStartDate">Task Initiated Date</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currentProcessEndDate" name="currentProcessEndDate" placeholder="Current Process End Date" readonly>
+                <label for="currentProcessEndDate">Task End Date</label>
+            </div>
+
+            <br>
+            <h4>Step Details</h4>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currentStepName" name="currentStepName" placeholder="Current Step Name" readonly>
+                <label for="currentStepName">Current Step</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currentStepStartedDate" name="currentStepStartedDate" placeholder="Current Step Started Date" readonly>
+                <label for="currentStepStartedDate">Step Initiated Date</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currentStepExpectedEndDate" name="currentStepExpectedEndDate" placeholder="Current Step Expected End Date" readonly>
+                <label for="currentStepExpectedEndDate">Step Expected End Date</label>
+                <div class="form-text text-muted text-end mt-0 bold stepSlaHours"></div>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="taskStartedByUser" name="taskStartedByUser" placeholder="Task Started By User" readonly>
+                <label for="taskStartedByUser">Task Initiated By</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currentActioningUser" name="currentActioningUser" placeholder="Current Actioning User" readonly>
+                <label for="currentActioningUser">Current Actioning User</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="previousActioningUser" name="previousActioningUser" placeholder="Previous Actioning User" readonly>
+                <label for="previousActioningUser">Previous Actioning User</label>
+            </div>
+            <input type="hidden" id="taskId" name="taskId"/>
+            <div class="taskActions">
+                <button class="btn btn-primary" id="closeTaskBtn">Close Task</button>
+                <button class="btn btn-primary" id="reopenTaskBtn">Reopen Task</button>
+                <button class="btn btn-primary" id="reassignTaskBtn">Reassign Task</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade row mt-4" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+        <table id="task-log-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Step</th>
+                <th>ActionDate</th>
+                <th>Action</th>
+                <th>ActioningUser</th>
+                <th>Assigned To</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>No.</th>
+                <th>Step</th>
+                <th>ActionDate</th>
+                <th>Action</th>
+                <th>ActioningUser</th>
+                <th>Assigned To</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="tab-pane fade row mt-4" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+        <table id="child-tasks-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Reference</th>
+                <th>Process</th>
+                <th>Step</th>
+                <th>Status</th>
+                <th>Current User</th>
+                <th>Date Initiated</th>
+                <th>Initiator</th>
+                <th>Previous User</th>
+                <th>Parent Task</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>No.</th>
+                <th>Reference</th>
+                <th>Process</th>
+                <th>Step</th>
+                <th>Status</th>
+                <th>Current User</th>
+                <th>Date Initiated</th>
+                <th>Initiator</th>
+                <th>Previous User</th>
+                <th>Parent Task</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/workflow/tasks/get.task.data.js"></script>
+    <script src="~/js/workflow/tasks/get.task.logs.dt.js"></script>
+    <script src="~/js/workflow/tasks/get.child.tasks.dt.js"></script>
+    <script src="~/js/workflow/tasks/close.task.js"></script>
+    <script src="~/js/workflow/tasks/reopen.task.js"></script>
+    <script src="~/js/workflow/tasks/reassign.task.js"></script>
+}

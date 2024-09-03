@@ -1,0 +1,220 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Create Step";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a class="edit-process-link" asp-area="Admin" asp-controller="Process" asp-action="Edit">Process</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Create Step</li>
+    </ol>
+</nav>
+
+<h1>CREATE STEP</h1>
+
+<form id="create-process-step-form" class="mt-4">
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active bold" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Step Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link bold" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Assignment Parameters</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active row mt-4" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+            <div class="col-md-8">
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="processName" disabled="disabled">
+                    <label for="name">Current Process</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="moduleName" disabled="disabled">
+                    <label for="name">Current Module</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter step name">
+                    <label for="name">Step Name<span class="text-danger">*</span></label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter step description" style="height: 100px"></textarea>
+                    <label for="description">Step Description<span class="text-danger">*</span></label>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="true" id="isInitialStep" name="isInitialStep">
+                    <label class="form-check-label" for="isInitialStep">
+                        Is Initial Step (Select if this is the first step in the process)
+                    </label>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="true" id="isFinalStep" name="isFinalStep">
+                    <label class="form-check-label" for="isFinalStep">
+                        Is Final Step (Select if this is the last step in the process)
+                    </label>
+                </div>
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="previousStepId" name="previousStepId" aria-label="previous step id">
+                        <option value="">- Select Previous Step -</option>
+                    </select>
+                    <label for="previousStepId">Previous Step</label>
+                    <div class="form-text text-muted text-end mt-0">Select the previous step before this step</div>
+                </div>
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="nextStepId" name="nextStepId" aria-label="next step id">
+                        <option value="">- Select Next Step -</option>
+                    </select>
+                    <label for="nextStepId">Next Step</label>
+                    <div class="form-text text-muted text-end mt-0">Select the next step after this step</div>
+                </div>
+
+                @*<div class="mb-3 form-floating">
+                    <select class="form-select" id="nextProcessId" name="nextProcessId" aria-label="next process id">
+                        <option value="">- Select Next Process -</option>
+                    </select>
+                    <label for="nextProcessId">Next Process</label>
+                    <div class="form-text text-muted text-end mt-0">Select if this step automatically initiates a new process</div>
+                </div>
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="prevProcessId" name="prevProcessId" aria-label="prev process id">
+                        <option value="">- Select Previous Process -</option>
+                    </select>
+                    <label for="prevProcessId">Previous Process</label>
+                    <div class="form-text text-muted text-end mt-0">Select if this step is a continuation of a previous process</div>
+                </div>*@
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="privilegeId" name="privilegeId" aria-label="privilege id">
+                        <option value="">- Select Privilege -</option>
+                    </select>
+                    <label for="privilegeId">Privilege<span class="text-danger">*</span></label>
+                    <div class="form-text text-muted text-end mt-0">Select the privilege that will perform this task</div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="requestMap">Request Map URL<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="requestMap" name="requestMap" placeholder="E.g: /enter/step/url/here">
+                    <div class="form-text text-muted text-end mt-0">Enter the URL of the request map for this step</div>
+                </div>
+
+                <div class="form-floating">
+                    <select class="form-select" id="slaHours" name="slaHours">
+                        <option value="">- Select SLA Hours -</option>
+                    </select>
+                    <label for="slaHours">Service Level Agreement (SLA) Hours</label>
+                    <div class="form-text text-muted text-end mt-0">Select the maximum number of hours to complete this task</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade row mt-4" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+            <div class="col-md-8">
+
+                <div class="alert alert-warning" id="stepAssignmentsAlert" role="alert">
+                    <strong>Note:</strong> Please select at least one of the following options below.
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="true" id="isAutoApproved" name="isAutoApproved" disabled="disabled">
+                    <label class="form-check-label" for="isAutoApproved">
+                        Automatic Approval? (Check this box if this step does not require user intervention)
+                    </label>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="true" id="isDepartmentHeadApproved" name="isDepartmentHeadApproved">
+                    <label class="form-check-label" for="isDepartmentHeadApproved">
+                        Department Head Approval? (Check this box if this step requires department head approval)
+                    </label>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="actioningUserId">Select Actioning User</label>
+                    <select class="form-control" id="actioningUserId" name="actioningUserId"></select>
+                    <div class="form-text text-muted text-end mt-0">Select the user who will perform this task</div>
+                </div>
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="roleId" name="roleId" aria-label="role id">
+                        <option value="">- Select Role -</option>
+                    </select>
+                    <label for="roleId">Role</label>
+                    <div class="form-text text-muted text-end mt-0">Select the user role that will perform this task</div>
+                </div>
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="organizationId" name="organizationId" aria-label="organization id">
+                        <option value="">- Select Organization -</option>
+                    </select>
+                    <label for="organizationId">Organization</label>
+                    <div class="form-text text-muted text-end mt-0">Select the organization that will perform this task</div>
+                </div>
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="branchId" name="branchId" aria-label="branch id">
+                        <option value="">- Select Branch -</option>
+                    </select>
+                    <label for="branchId">Branch</label>
+                    <div class="form-text text-muted text-end mt-0">Select the branch that will perform this task</div>
+                </div>
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="departmentId" name="departmentId" aria-label="department id">
+                        <option value="">- Select Department -</option>
+                    </select>
+                    <label for="departmentId">Department</label>
+                    <div class="form-text text-muted text-end mt-0">Select the department that will perform this task</div>
+                </div>
+
+                <div class="mb-3 form-floating">
+                    <select class="form-select" id="officeId" name="officeId" aria-label="office id">
+                        <option value="">- Select Office -</option>
+                    </select>
+                    <label for="officeId">Office</label>
+                    <div class="form-text text-muted text-end mt-0">Select the office that will perform this task</div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <input type="hidden" id="processId" name="processId"/>
+
+    <br>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a class="btn btn-secondary back-btn" href="#">Back</a>
+</form>
+
+@section Scripts {
+    <script src="~/js/workflow/step/get.process.data.js"></script>
+    <script src="~/js/workflow/step/get.all.organizations.js"></script>
+    <script src="~/js/workflow/step/get.all.branches.js"></script>
+    <script src="~/js/workflow/step/get.all.departments.js"></script>
+    <script src="~/js/workflow/step/get.all.offices.js"></script>
+    <script src="~/js/workflow/step/get.all.privileges.js"></script>
+    <script src="~/js/workflow/step/get.sla.hours.js"></script>
+    <script src="~/js/workflow/step/get.all.employees.select2.js"></script>
+    <script src="~/js/workflow/step/get.process.steps.js"></script>
+    @* <script src="~/js/workflow/step/get.all.processes.js"></script> *@
+    <script src="~/js/workflow/step/get.all.roles.js"></script>
+    <script src="~/js/workflow/step/configure.step.js"></script>
+    <script src="~/js/workflow/step/create.step.js"></script>
+}

@@ -1,0 +1,46 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Privileges";
+    Layout = "_Layout";
+}
+
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Privileges</li>
+    </ol>
+</nav>
+
+<h1>PRIVILEGES</h1>
+<hr>
+
+<table id="privileges-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Privilege</th>
+        <th>Description</th>
+        <th>No. of Roles</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Privilege</th>
+        <th>Description</th>
+        <th>No. of Roles</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/privilege/get.all.privileges.dt.js"></script>
+    <script src="~/js/security/privilege/delete.privilege.js"></script>
+    <script src="~/js/security/privilege/count.privilege.roles.js"></script>
+
+}

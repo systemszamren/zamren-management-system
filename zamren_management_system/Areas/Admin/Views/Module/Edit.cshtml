@@ -1,0 +1,102 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Edit Module";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Module" asp-action="Index">Modules</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+
+<h1>MODULE: <span class="moduleName"></span></h1>
+<hr>
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-edit-module-tab" data-bs-toggle="pill" href="#pills-edit-module"
+                   role="tab" aria-controls="pills-edit-module" aria-selected="true">
+                    Edit Module
+                </a>
+                <a class="nav-link" id="v-pills-module-privileges-tab" data-bs-toggle="pill"
+                   href="#pills-module-privileges" role="tab" aria-controls="pills-module-privileges"
+                   aria-selected="false">
+                    Module Privileges
+                </a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-edit-module" role="tabpanel"
+                     aria-labelledby="v-pills-edit-module-tab">
+                    <!-- Your form fields go here -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Edit Module</h3>
+                            <form id="edit-module-form" class="mt-3">
+                                <div class="form-group">
+                                    <label for="name">Module Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter module name">
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="name">Module Code</label>
+                                    <input type="text" class="form-control" id="code" name="code" placeholder="Enter module code">
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="description">Module Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter module description"></textarea>
+                                </div>
+                                <br>
+                                <input type="hidden" id="id" name="id"/>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="pills-module-privileges" role="tabpanel"
+                     aria-labelledby="v-pills-module-privileges-tab">
+                    <h4>MODULE PRIVILEGES</h4>
+
+                    <!-- Your table structure goes here -->
+                    <table id="module-privileges-table" class="ui celled table nowrap table-hover table-striped display"
+                           style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Privilege</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>No.</th>
+                            <th>Privilege</th>
+                            <th>Description</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/security/module/init.components.in.edit.js"></script>
+    <script src="~/js/security/module/get.module.data.js"></script>
+    <script src="~/js/security/module/get.privileges.in.module.dt.js"></script>
+    <script src="~/js/security/module/edit.module.js"></script>
+    <script src="~/js/security/module/toggle.nav.tabs.js"></script>
+}

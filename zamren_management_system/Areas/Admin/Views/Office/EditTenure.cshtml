@@ -1,0 +1,72 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Edit User Tenure";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Office" asp-action="Index">Offices</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a class="edit-office-link" asp-area="Admin" asp-controller="Office" asp-action="Edit">Edit</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a class="manage-office-users-link" asp-area="Admin" asp-controller="Office" asp-action="ManageUsers">Manage Users</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Tenure</li>
+    </ol>
+</nav>
+
+<h1>EDIT USER TENURE</h1>
+<h4>OFFICE: <span class="officeName"></span><i class="fa fa-info-circle"></i></h4>
+<hr>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="edit-office-user-tenure-form">
+            <div class="form-group mb-3">
+                <div class="form-group mb-3 mt-3">
+                    <label for="user">User</label>
+                    <input type="text" id="user" name="user" class="form-control" disabled="disabled">
+                </div>
+
+                <div class="mb-3">
+                    <label>Start Date (Tenure)</label>
+                    <div class="input-group date" id="startDate">
+                        <input type="text" class="form-control" name="startDate"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>End Date (Tenure)</label>
+                    <div class="input-group date" id="endDate">
+                        <input type="text" class="form-control" name="endDate"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <input type="hidden" name="id"/>
+                <button class="btn btn-primary" type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/security/office/get.office.user.data.js"></script>
+    <script src="~/js/security/office/edit.office.user.tenure.js"></script>
+}

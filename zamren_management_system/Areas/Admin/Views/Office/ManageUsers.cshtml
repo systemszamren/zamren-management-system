@@ -1,0 +1,100 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Manage Office Users";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Office" asp-action="Index">Offices</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a class="edit-office-link" asp-area="Admin" asp-controller="Office" asp-action="Edit">Edit</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Manage Users</li>
+    </ol>
+</nav>
+
+<h1>MANAGE OFFICE USERS</h1>
+<h4>OFFICE: <span class="officeName"></span></h4>
+<hr>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="add-user-to-office-form">
+            <div class="form-group mb-3">
+                <label for="userId" class="">Add User to Office</label><br>
+                <select class="form-control userId-select2" id="userId" name="userId">
+                </select>
+
+                <div class="mb-3 mt-3">
+                    <label>Start Date (Tenure)</label>
+                    <div class="input-group date" id="startDate">
+                        <input type="text" class="form-control" name="startDate"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>End Date (Tenure)</label>
+                    <div class="input-group date" id="endDate">
+                        <input type="text" class="form-control" name="endDate"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <input type="hidden" name="currentOfficeId"/>
+                <button class="btn btn-primary addUserToOfficeBtn" disabled="disabled" type="submit">Add User</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br>
+<br>
+
+<table id="office-users-table2" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>StartDate</th>
+        <th>EndDate</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>StartDate</th>
+        <th>EndDate</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/common/init.start.end.datepicker.js"></script>
+    <script src="~/js/security/office/get.office.data2.js"></script>
+    <script src="~/js/security/office/get.users.not.in.office.select2.js"></script>
+    <script src="~/js/security/office/get.users.in.office.dt2.js"></script>
+    <script src="~/js/security/office/remove.user.from.office.js"></script>
+    <script src="~/js/security/office/add.user.to.office.js"></script>
+}

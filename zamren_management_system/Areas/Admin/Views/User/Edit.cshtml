@@ -1,0 +1,612 @@
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="User" asp-action="Index">Users</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+
+<h1>
+    <span class="fullName"></span>
+</h1>
+<span class="accountStatusBadge"></span>
+<hr>
+
+<div class="container">
+<div class="row">
+<div class="col-3">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+        <a class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" href="#pills-profile"
+           role="tab" aria-controls="pills-profile" aria-selected="true">
+            Profile
+        </a>
+
+        <a class="nav-link" id="v-user-details-tab" data-bs-toggle="pill" href="#pills-user-details" role="tab"
+           aria-controls="pills-user-details" aria-selected="false">
+            User Details
+        </a>
+
+        <a class="nav-link" id="v-pills-roles-tab" data-bs-toggle="pill" href="#pills-roles" role="tab"
+           aria-controls="pills-roles" aria-selected="false">
+            Roles
+        </a>
+
+        <a class="nav-link" id="v-pills-password-tab" data-bs-toggle="pill" href="#pills-password" role="tab"
+           aria-controls="pills-password" aria-selected="false">
+            Password
+        </a>
+
+        <a class="nav-link" id="v-pills-external-logins-tab" data-bs-toggle="pill" href="#pills-external-logins"
+           role="tab" aria-controls="pills-external-logins" aria-selected="false">
+            External Logins
+        </a>
+
+        <a class="nav-link" id="v-pills-2fa-tab" data-bs-toggle="pill" href="#pills-2fa" role="tab"
+           aria-controls="pills-2fa" aria-selected="false">
+            Two-Factor Authentication
+        </a>
+
+        <a class="nav-link" id="v-pills-account-settings-tab" data-bs-toggle="pill"
+           href="#pills-account-settings" role="tab" aria-controls="pills-account-settings"
+           aria-selected="false">
+            Account Settings
+        </a>
+
+    </div>
+</div>
+<div class="col-9">
+<div class="tab-content" id="v-pills-tabContent">
+
+<div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
+     aria-labelledby="v-pills-profile-tab">
+    <!-- Your Profile Content Here -->
+    <h3>Profile</h3>
+    <div class="row">
+        <div class="col-md-12">
+
+            <form id="edit-user-form">
+
+                <div class="container-profile-pic card rounded-circle overflow-hidden m-3">
+                    <div class="photo-preview card-img w-100 h-100">
+                    </div>
+                    <div class="middle-profile-pic text-center card-img-overlay d-none flex-column justify-content-center">
+                        <div class="text-profile-pic text-success">
+                            <i class="fa fa-camera"></i>
+                            <div class="text-profile-pic">
+                                <b>Change Photo</b>
+                            </div>
+                        </div>
+                        <input type="file" id="profilePictureAttachment" class="profile-pic-input" accept=".png,.jpg,.jpeg">
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="firstName" name="firstName"
+                           placeholder="First Name">
+                    <label for="firstName">First Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="lastName" name="lastName"
+                           placeholder="Last Name">
+                    <label for="lastName">Last Name</label>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="email">Account Email</label>
+                    <div class="input-group">
+                        <input type="email" class="form-control" id="email" name="email"
+                               placeholder="jane@example.com">
+                        <span class="input-group-text bg-white emailAddressVerification">
+                            <button class="btn bg-transparent text-danger btn-sm verifyEmailAddressBtn" type="button" title="Verify Email">
+                                Verify
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3 employeesSelect">
+                    <label for="supervisorUserId" class="supervisorUserIdLabel">Select Supervisor (If Any)</label><br>
+                    <select class="form-control employeesUserId-select2" id="supervisorUserId" name="supervisorUserId">
+                    </select>
+                    <div class="form-text text-muted text-end mt-0 supervisorDetailsDiv" style="font-size: medium"></div>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="isEmployee" name="isEmployee" value="true">
+                    <label class="form-check-label" for="isEmployee">Is An Employee</label>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="canActionWkfTask" name="canActionWkfTask" value="true">
+                    <label class="form-check-label" for="canActionWkfTask">Can Perform Workflow Tasks</label>
+                </div>
+
+                <input type="hidden" id="userId" name="userId">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="tab-pane fade" id="pills-user-details" role="tabpanel" aria-labelledby="v-user-details-tab">
+<form id="edit-user-details-form" enctype="multipart/form-data" class="row">
+<div class="col-md-12">
+    @*progress bar*@
+    <div class="progress mb-3">
+        <div class="progress-bar progress-bar-striped" style="width:0">0%</div>
+    </div>
+</div>
+<!-- User Details -->
+<div class="col-md-6">
+    <h3>User Details</h3>
+    <div class="mb-3 form-floating">
+        <select class="form-select" id="gender" name="gender" aria-label="Gender">
+            <option value="">- Select -</option>
+        </select>
+        <label for="gender">Gender</label>
+    </div>
+
+    <div class="mb-3">
+        <label>Date of Birth</label>
+        <div class="input-group date" id="dateOfBirth">
+            <input type="text" class="form-control" name="dateOfBirth"/>
+            <span class="input-group-append">
+                <span class="input-group-text bg-light d-block">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <select class="form-select" id="identityType" name="identityType" aria-label="Identity Type">
+            <option value="">- Select -</option>
+        </select>
+        <label for="identityType">Identity Type</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="identityNumber" name="identityNumber" placeholder="Identity Number">
+        <label for="identityNumber">Identity Number</label>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="countryCode">Country</label><br>
+        <select class="form-select" style="width: 100%;" data-default="Zambia" name="countryCode" id="countryCode" aria-label="Country Code">
+        </select>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="city" name="city" placeholder="City">
+        <label for="city">City</label>
+    </div>
+
+    <div class="mb-3 form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <div class="input-group">
+            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="+260...">
+            <span class="input-group-text bg-white phoneNumberVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyPhoneNumberBtn" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 form-group">
+        <label for="alternativePhoneNumber">Alternative Phone Number</label>
+        <div class="input-group">
+            <input type="tel" class="form-control" id="alternativePhoneNumber" name="alternativePhoneNumber" placeholder="+260...">
+            <span class="input-group-text bg-white alternativePhoneNumberVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyAlternativePhoneNumberBtn" disabled="disabled" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3 form-group">
+        <label for="alternativeEmailAddress">Alternative Email Address</label>
+        <div class="input-group">
+            <input type="email" class="form-control" id="alternativeEmailAddress" name="alternativeEmailAddress" placeholder="jane@example.com">
+            <span class="input-group-text bg-white alternativeEmailAddressVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyAlternativeEmailAddressBtn" disabled="disabled" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="identityAttachment">Identity Attachment</label><br>
+        <div class="input-group">
+            <input type="file" class="form-control" id="identityAttachment" name="identityAttachment" accept=".png,.jpg,.jpeg,.pdf">
+            <button class="btn btn-outline-secondary previewIdentityAttachmentBtn" disabled="disabled" type="button" data-label="Identity Attachment">Preview</button>
+        </div>
+        <input type="hidden" name="identityAttachmentId"/>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <textarea class="form-control" id="physicalAddress" name="physicalAddress" placeholder="Physical Address" style="height: 100px"></textarea>
+        <label for="physicalAddress">Physical Address</label>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="proofOfResidencyAttachment">Proof of Residency Attachment</label><br>
+        <div class="input-group">
+            <input type="file" class="form-control" id="proofOfResidencyAttachment" name="proofOfResidencyAttachment" accept=".png,.jpg,.jpeg,.pdf">
+            <button class="btn btn-outline-secondary previewProofOfResidencyAttachmentBtn" disabled="disabled" type="button" data-label="Proof of Residency Attachment">Preview</button>
+        </div>
+    </div>
+</div>
+
+<!-- Next of Kin Details -->
+<div class="col-md-6">
+    <h3>Next of Kin's Details</h3>
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="nextOfKinFirstName" name="nextOfKinFirstName" placeholder="Next of Kin First Name">
+        <label for="nextOfKinFirstName">Next of Kin's First Name</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="nextOfKinLastName" name="nextOfKinLastName" placeholder="Next of Kin Last Name">
+        <label for="nextOfKinLastName">Next of Kin's Last Name</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <select class="form-select" id="nextOfKinIdentityType" name="nextOfKinIdentityType" aria-label="Next of Kin Identity Type">
+            <option value="">- Select -</option>
+        </select>
+        <label for="nextOfKinIdentityType">Next of Kin's Identity Type</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="nextOfKinIdentityNumber" name="nextOfKinIdentityNumber" placeholder="Next of Kin Identity Number">
+        <label for="nextOfKinIdentityNumber">Next of Kin's Identity Number</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <textarea class="form-control" id="nextOfKinPhysicalAddress" name="nextOfKinPhysicalAddress" placeholder="Next of Kin Physical Address" style="height: 100px"></textarea>
+        <label for="nextOfKinPhysicalAddress">Next of Kin's Physical Address</label>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <select class="form-select" id="nextOfKinGender" name="nextOfKinGender" aria-label="Next of Kin Gender">
+            <option value="">- Select -</option>
+        </select>
+        <label for="nextOfKinGender">Next of Kin's Gender</label>
+    </div>
+
+    <div class="mb-3 form-group" style="width: 100%">
+        <label for="nextOfKinPhoneNumber">Next of Kin's Phone Number</label>
+        <div class="input-group">
+            <input type="tel" class="form-control" id="nextOfKinPhoneNumber" name="nextOfKinPhoneNumber" placeholder="+260...">
+            <span class="input-group-text bg-white nextOfKinPhoneNumberVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyNextOfKinPhoneNumberBtn" disabled="disabled" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="nextOfKinCountryCode">Next of Kin's Country</label><br>
+        <select class="form-select" style="width: 100%;" data-default="Zambia" name="nextOfKinCountryCode" id="nextOfKinCountryCode" aria-label="Next of Kin Country Code">
+        </select>
+    </div>
+
+    <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="nextOfKinCity" name="nextOfKinCity" placeholder="Next of Kin City">
+        <label for="nextOfKinCity">Next of Kin's City</label>
+    </div>
+
+    <div class="mb-3 form-group">
+        <label for="nextOfKinEmailAddress">Next of Kin's Email Address</label>
+        <div class="input-group">
+            <input type="email" class="form-control" id="nextOfKinEmailAddress" name="nextOfKinEmailAddress" placeholder="john@example.com">
+            <span class="input-group-text bg-white nextOfKinEmailAddressVerification">
+                <button class="btn bg-transparent text-danger btn-sm verifyNextOfKinEmailAddressBtn" disabled="disabled" type="button">Verify</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="nextOfKinProofOfResidencyAttachment">Next of Kin Proof of Residency Attachment</label><br>
+        <div class="input-group">
+            <input type="file" class="form-control" id="nextOfKinProofOfResidencyAttachment" name="nextOfKinProofOfResidencyAttachment" placeholder="" accept=".png,.jpg,.jpeg,.pdf">
+            <button class="btn btn-outline-secondary previewNextOfKinProofOfResidencyAttachmentBtn" disabled="disabled" type="button" value="" data-label="Next of Kin Proof of Residency Attachment">Preview</button>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="nextOfKinIdentityAttachment">Next of Kin Identity Attachment</label><br>
+        <div class="input-group">
+            <input type="file" class="form-control" id="nextOfKinIdentityAttachment" name="nextOfKinIdentityAttachment" accept=".png,.jpg,.jpeg,.pdf">
+            <button class="btn btn-outline-secondary previewNextOfKinIdentityAttachmentBtn" disabled="disabled" type="button" data-label="Next of Kin Identity Attachment">Preview</button>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="termsOfUseAccepted" name="termsOfUseAccepted">
+    <label class="form-check-label" for="termsOfUseAccepted">Terms of Use Accepted</label>
+</div>
+
+<div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="privacyPolicyAccepted" name="privacyPolicyAccepted">
+    <label class="form-check-label" for="privacyPolicyAccepted">Privacy Policy Accepted</label>
+</div>
+
+<input type="hidden" name="userDetailId"/>
+<input type="hidden" name="userId"/>
+
+<button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+</div>
+
+<div class="tab-pane fade" id="pills-roles" role="tabpanel" aria-labelledby="v-pills-roles-tab">
+    <!-- Your Roles Content Here -->
+    <h3>Add Role to User</h3>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <form id="add-role-to-user-form">
+                <div class="form-group mb-3">
+                    <label for="roleId" class="">Select Role</label><br>
+                    <select class="form-control roleId-select2" id="roleId" name="roleId" style="width: 100%">
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Start Date (Tenure)</label>
+                    <div class="input-group date" id="startDate">
+                        <input type="text" class="form-control" name="startDate"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>End Date (Tenure)</label>
+                    <div class="input-group date" id="endDate">
+                        <input type="text" class="form-control" name="endDate"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <input type="hidden" name="userId"/>
+                <button class="btn btn-primary addRoleToUserBtn" disabled="disabled"
+                        type="submit">
+                    Add Role
+                </button>
+            </form>
+        </div>
+
+        <div class="col-md-12 mt-5">
+            <h4>User's Roles</h4>
+            <table id="user-roles-table"
+                   class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>RoleName</th>
+                    @* <th>Description</th> *@
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>No.</th>
+                    <th>RoleName</th>
+                    @* <th>Description</th> *@
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>Actions</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
+    <!-- Your Password Content Here -->
+    <h3>Password History</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="user-password-history-table"
+                   class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Date Created</th>
+                    <th>Password Expiry</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>No.</th>
+                    <th>Date Created</th>
+                    <th>Password Expiry</th>
+                    <th>Status</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="tab-pane fade" id="pills-external-logins" role="tabpanel"
+     aria-labelledby="v-pills-external-logins-tab">
+    <!-- Your External logins Content Here -->
+    <h3>External Logins</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="external-logins-table"
+                   class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>External Login Provider</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>No.</th>
+                    <th>External Login Provider</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="tab-pane fade" id="pills-2fa" role="tabpanel" aria-labelledby="v-pills-2fa-tab">
+    <!-- Your Two-factor authentication Content Here -->
+    <h3>Two-Factor Authentication</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="two-factor-authentication-table"
+                   class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>2FA Status</th>
+                    <th>Unused Recovery Codes</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>No.</th>
+                    <th>2FA Status</th>
+                    <th>Unused Recovery Codes</th>
+                    <th>Action</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="tab-pane fade" id="pills-account-settings" role="tabpanel"
+     aria-labelledby="v-pills-account-settings-tab">
+    <!-- Your Account Settings Content Here -->
+    <h3>Account Settings</h3>
+
+    <button class="btn btn-danger btn-sm userAccountSettingBtn lockUserAccountBtn">Lock Account</button>
+    <button class="btn btn-success btn-sm userAccountSettingBtn unlockUserAccountBtn">Unlock Account</button>
+    <button class="btn btn-success btn-sm userAccountSettingBtn reverseAccountDeletionBtn">Reverse Account Deletion</button>
+    <button class="btn btn-danger btn-sm userAccountSettingBtn scheduleAccountDeletionBtn">Schedule Account Deletion</button>
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="previewAttachmentModal" tabindex="-1" aria-labelledby="previewAttachmentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="min-height: 100vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewAttachmentModalLabel">Attachment Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <iframe id="attachmentPreview" src="" width="100%" style="height: 100vh"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="previewImageModal" tabindex="-1" aria-labelledby="previewImageModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="min-height: 100vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewImageModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="imagePreview" src="" width="100%" height="100%" alt="image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @*init*@
+    <script src="~/js/security/user/init.components.js"></script>
+    <script src="~/js/common/init.start.end.datepicker.js"></script>
+
+    @*get constants*@
+    <script src="~/js/common/select.genders.js"></script>
+    <script src="~/js/common/select.identity.types.js"></script>
+    <script src="~/js/common/select.countries.js"></script>
+
+    @*user-data*@
+    <script src="~/js/security/user/get.user.data.js"></script>
+    <script src="~/js/security/user/get.employees.except.select2.js"></script>
+    <script src="~/js/security/user/edit.user.js"></script>
+
+    @*user-details*@
+    <script src="~/js/security/user/get.user.details.js"></script>
+    <script src="~/js/security/user/preview.user.attachments.js"></script>
+    <script src="~/js/security/user/edit.user.details.js"></script>
+
+    @*profile pic*@
+    <script src="~/js/security/user/change.profile.picture.js"></script>
+
+    @*roles*@
+    <script src="~/js/security/role/get.user.roles.dt.js"></script>
+    <script src="~/js/security/role/get.all.roles.not.assigned.to.user.select2.js"></script>
+    <script src="~/js/security/role/add.role.to.user.js"></script>
+    <script src="~/js/security/role/remove.role.from.user.js"></script>
+
+    @*password-history*@
+    <script src="~/js/security/user/get.user.password.history.dt.js"></script>
+
+    @*external-logins*@
+    <script src="~/js/security/user/get.external.logins.dt.js"></script>
+
+    @*2fa-status*@
+    <script src="~/js/security/user/get.user.2fa.status.dt.js"></script>
+    <script src="~/js/security/user/disable.2fa.js"></script>
+
+    @*user account actions*@
+    <script src="~/js/security/user/lock.user.account.js"></script>
+    <script src="~/js/security/user/unlock.user.account.js"></script>
+    <script src="~/js/security/user/schedule.account.deletion.js"></script>
+    <script src="~/js/security/user/reverse.account.deletion.js"></script>
+
+    @*verify emails and phone numbers*@
+    <script src="~/js/security/user/verify.phone.number.js"></script>
+    <script src="~/js/security/user/verify.email.address.js"></script>
+
+    @*nav tabs*@
+    <script src="~/js/security/user/toggle.nav.tabs.in.user.profile.js"></script>
+}

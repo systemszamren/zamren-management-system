@@ -1,0 +1,51 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewBag.Title = "Demo Demo File Upload";
+    Layout = "_Layout";
+}
+
+<h1>@ViewBag.CurrentUrl</h1>
+<p>Demo File Upload</p>
+
+
+<br>
+<br>
+<br>
+<div class="row">
+    <form id="file-form" enctype="multipart/form-data" class="col-md-5 p-3 m-1 border border-1 border-dark">
+        <div class="form-group">
+            <label for="file">Attach File</label><br>
+            <input type="file" id="file" name="file" class="form-control" accept=".png,.jpg,.jpeg,.pdf">
+        </div>
+        <br/>
+        <div class="form-group">
+            <label for="purpose">Purpose</label>
+            <input type="text" id="purpose" name="purpose" class="form-control">
+        </div>
+        <br/>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Upload One File</button>
+        </div>
+    </form>
+
+    <form id="files-form" enctype="multipart/form-data" class="col-md-5 p-3 m-1 border border-1 border-dark">
+        <div class="form-group">
+            <label for="files">Attach Files</label><br>
+            <input type="file" id="files" class="form-control" name="files" multiple accept=".png,.jpg,.jpeg,.pdf">
+        </div>
+        <br/>
+        <div class="form-group">
+            <label for="purpose1">Purpose</label>
+            <input type="text" id="purpose1" name="purpose1" class="form-control">
+        </div>
+        <br/>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Upload Multiple File</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/common/file.upload.js"></script>
+}

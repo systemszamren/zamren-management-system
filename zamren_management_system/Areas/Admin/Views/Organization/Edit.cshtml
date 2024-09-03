@@ -1,0 +1,68 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Edit Organization";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Organization" asp-action="Index">Organizations</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+
+<h1>EDIT ORGANIZATION</h1>
+<hr>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form id="edit-organization-form" class="mt-3">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter organization name">
+                <label for="name">Organization Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter organization description" style="height: 100px"></textarea>
+                <label for="description">Organization Description</label>
+            </div>
+            <input type="hidden" id="id" name="id"/>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+
+    </div>
+</div>
+
+<br>
+<br>
+
+<h4>MANAGE BRANCHES</h4>
+<table id="organization-branches-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Branch</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Branch</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/organization/get.organization.data.js"></script>
+    <script src="~/js/security/organization/get.branches.in.organization.dt.js"></script>
+    <script src="~/js/security/organization/edit.organization.js"></script>
+}

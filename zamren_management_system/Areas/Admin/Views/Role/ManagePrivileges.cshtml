@@ -1,0 +1,68 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Manage Role Privileges";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Role" asp-action="Index">Roles</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a class="edit-role-link" asp-area="Admin" asp-controller="Role" asp-action="Edit">Edit</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Manage Privileges</li>
+    </ol>
+</nav>
+
+<h1>MANAGE ROLE PRIVILEGES</h1>
+<h4>Role Name: <span class="roleName"></span></h4>
+<hr>
+
+<div class="row">
+    <div class="col-md-8">
+        <form id="add-privilege-to-role-form">
+            <label for="privilegeId" class="">Add Privilege to Role</label>
+            <div class="input-group mb-3">
+                <select class="form-control privilegeId-select2" id="privilegeId" name="privilegeId" style="width: 70%">
+                </select>
+                <input type="hidden" name="currentRoleId"/>
+                <button class="btn btn-primary addPrivilegeToRoleBtn" disabled="disabled" type="submit">Add Privilege</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br>
+<br>
+
+<table id="role-privileges-table2" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Privilege</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Privilege</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/role/get.role.data.js"></script>
+    <script src="~/js/security/role/get.privileges.not.in.role.select2.js"></script>
+    <script src="~/js/security/role/get.privileges.in.role.dt2.js"></script>
+    <script src="~/js/security/role/remove.privilege.from.role.js"></script>
+    <script src="~/js/security/role/add.privilege.to.role.js"></script>
+}

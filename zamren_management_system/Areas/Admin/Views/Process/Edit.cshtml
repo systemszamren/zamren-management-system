@@ -1,0 +1,94 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "Edit Workflow Process";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Process" asp-action="Index">Process</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+
+<h1>EDIT WORKFLOW PROCESS</h1>
+<br>
+@* <hr> *@
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active bold" data-bs-toggle="tab" href="#home">Edit Process</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link bold" data-bs-toggle="tab" href="#menu1">Manage Steps</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+
+    <div class="tab-pane container active" id="home">
+        <div class="row">
+            <div class="col-md-6">
+
+                <form id="edit-process-form" class="mt-3">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter process name">
+                        <label for="name">Process Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter process description" style="height: 100px"></textarea>
+                        <label for="description">Process Description</label>
+                    </div>
+                    <div class="mb-3 form-floating">
+                        <select class="form-select" id="moduleId" name="moduleId" aria-label="module id">
+                            <option value="">- Select Module -</option>
+                        </select>
+                        <label for="moduleId">Module</label>
+                    </div>
+                    <input type="hidden" id="id" name="id"/>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane container fade" id="menu1">
+        <p class="responseMsg mt-3"></p>
+        <table id="process-steps-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+            <thead>
+            <tr>
+                <th>Order.</th>
+                <th>Step</th>
+                <th>Previous Step</th>
+                <th>Next Step</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>Order.</th>
+                <th>Step</th>
+                <th>Previous Step</th>
+                <th>Next Step</th>
+                <th>Action</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script src="~/js/workflow/process/get.process.data.js"></script>
+    <script src="~/js/workflow/process/get.steps.in.process.dt.js"></script>
+    <script src="~/js/workflow/step/delete.step.js"></script>
+    <script src="~/js/workflow/process/edit.process.js"></script>
+}

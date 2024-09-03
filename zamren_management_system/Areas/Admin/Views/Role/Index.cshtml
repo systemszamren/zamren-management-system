@@ -1,0 +1,45 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewBag.Title = "User Roles";
+    Layout = "_Layout";
+}
+
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Roles</li>
+    </ol>
+</nav>
+
+<h1>ROLES</h1>
+<hr>
+
+<table id="roles-table" class="ui celled table nowrap table-hover table-striped display" style="width:100%">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Role Name</th>
+        @* <th>Description</th> *@
+        <th>No. of Users</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>No.</th>
+        <th>Role Name</th>
+        @* <th>Description</th> *@
+        <th>No. of Users</th>
+        <th>Action</th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script src="~/js/security/role/get.all.roles.dt.js"></script>
+    <script src="~/js/security/role/delete.role.js"></script>
+    <script src="~/js/security/role/count.role.users.js"></script>
+}

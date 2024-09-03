@@ -1,0 +1,190 @@
+@model zamren_management_system.Areas.Security.Models.UserDetail
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout";
+}
+
+<h1>Complete User Profile</h1>
+<hr/>
+
+@*<form asp-action="Create">
+    <div class="row">
+
+        <div class="col-md-6">
+            <h4>Enter User Details</h4>
+            <hr/>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.ApplicationUsers"></select>
+            </div>
+            $1$<div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control"/>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control"/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>#1#
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <select asp-for="Gender" asp-items="ViewBag.Gender" class="form-control"></select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control"/>
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfilePictureAttachmentFile" class="control-label"></label>
+                <input asp-for="ProfilePictureAttachmentFile" type="file" accept="image/*" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdentityType" class="control-label"></label>
+                <select asp-for="IdentityType" asp-items="ViewBag.IdentityType" class="form-control"></select>
+                <span asp-validation-for="IdentityType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdentityNumber" class="control-label"></label>
+                <input asp-for="IdentityNumber" class="form-control"/>
+                <span asp-validation-for="IdentityNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdentityAttachmentFile" class="control-label"></label>
+                <input asp-for="IdentityAttachmentFile" type="file" accept="image/*,.pdf" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <select asp-for="Country" class="form-control selectpicker countrypicker" data-live-search="true"
+                        data-default="Zambia" data-flag="true">
+                </select>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control"/>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control PhoneNumberInput"/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AlternativeEmailAddress" class="control-label"></label>
+                <input asp-for="AlternativeEmailAddress" class="form-control"/>
+                <span asp-validation-for="AlternativeEmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhysicalAddress" class="control-label"></label>
+                <textarea asp-for="PhysicalAddress" class="form-control"></textarea>
+                <span asp-validation-for="PhysicalAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProofOfResidencyAttachmentFile" class="control-label"></label>
+                <input asp-for="ProofOfResidencyAttachmentFile" type="file" accept="image/*,.pdf" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h4>Enter Next of Kin Details</h4>
+            <hr/>
+            <div class="form-group">
+                <label asp-for="NextOfKinFirstName" class="control-label"></label>
+                <input asp-for="NextOfKinFirstName" class="form-control"/>
+                <span asp-validation-for="NextOfKinFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinLastName" class="control-label"></label>
+                <input asp-for="NextOfKinLastName" class="form-control"/>
+                <span asp-validation-for="NextOfKinLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinIdentityType" class="control-label"></label>
+                <select asp-for="NextOfKinIdentityType" asp-items="ViewBag.IdentityType" class="form-control"></select>
+                <span asp-validation-for="NextOfKinIdentityType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinIdentityNumber" class="control-label"></label>
+                <input asp-for="NextOfKinIdentityNumber" class="form-control"/>
+                <span asp-validation-for="NextOfKinIdentityNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinIdentityAttachmentFile" class="control-label"></label>
+                <input asp-for="NextOfKinIdentityAttachmentFile" type="file" accept="image/*,.pdf" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinPhysicalAddress" class="control-label"></label>
+                <textarea asp-for="NextOfKinPhysicalAddress" class="form-control"></textarea>
+                <span asp-validation-for="NextOfKinPhysicalAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinGender" class="control-label"></label>
+                <select asp-for="NextOfKinGender" asp-items="ViewBag.NextOfKinGender" class="form-control"></select>
+                <span asp-validation-for="NextOfKinGender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinPhoneNumber" class="control-label"></label>
+                <input asp-for="NextOfKinPhoneNumber" class="form-control PhoneNumberInput"/>
+                <span asp-validation-for="NextOfKinPhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinCountry" class="control-label"></label>
+                <select asp-for="NextOfKinCountry" class="form-control selectpicker countrypicker" data-live-search="true"
+                        data-default="Zambia" data-flag="true">
+                </select>
+                <span asp-validation-for="NextOfKinCountry" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinCity" class="control-label"></label>
+                <input asp-for="NextOfKinCity" class="form-control"/>
+                <span asp-validation-for="NextOfKinCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinEmailAddress" class="control-label"></label>
+                <input asp-for="NextOfKinEmailAddress" class="form-control"/>
+                <span asp-validation-for="NextOfKinEmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextOfKinProofOfResidencyAttachmentFile" class="control-label"></label>
+                <input asp-for="NextOfKinProofOfResidencyAttachmentFile" type="file" accept="image/*,.pdf" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <h4>Submit Details</h4>
+            <hr/>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TermsOfUseAccepted"/> @Html.DisplayNameFor(model =>
+                                                                                       model.TermsOfUseAccepted)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PrivacyPolicyAccepted"/> @Html.DisplayNameFor(model =>
+                                                                                          model.PrivacyPolicyAccepted)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary m-1"/>
+                <input type="submit" value="Save For Later" class="btn btn-light m-1"/>
+            </div>
+        </div>
+
+    </div>
+</form>*@
+
+@*<div>
+    <a asp-action="">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}*@
