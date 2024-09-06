@@ -85,4 +85,6 @@ public sealed class WkfProcessStep
     public IEnumerable<WkfTaskAttachment>? WkfTaskAttachments { get; set; }
     public IEnumerable<WkfTask>? WkfTasksSentBackAtStep { get; set; }
     public IEnumerable<WkfTaskLog>? StepWkfTaskLogs { get; set; }
+    public IEnumerable<WkfProcessStepCondition>? CurrentStepConditions { get; set; }
+    public IEnumerable<WkfProcessStepCondition>? NextStepConditions { get; set; }
 }

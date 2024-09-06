@@ -136,4 +136,6 @@ public class ApplicationUser : IdentityUser
     public IEnumerable<PurchaseRequisitionRequest>? ModifiedPurchaseRequisitionRequests { get; set; }
     public IEnumerable<PurchaseRequisitionRequestAttachment>? CreatedPurchaseRequisitionRequestAttachments { get; set; }
     public IEnumerable<PurchaseRequisitionRequestAttachment>? ModifiedPurchaseRequisitionRequestAttachments { get; set; }
+    public IEnumerable<WkfProcessStepCondition>? CreatedWkfProcessStepConditions { get; set; }
+    public IEnumerable<WkfProcessStepCondition>? ModifiedWkfProcessStepConditions { get; set; }
 }

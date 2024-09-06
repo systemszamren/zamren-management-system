@@ -92,6 +92,7 @@ builder.Services.AddTransient<IEmailTemplate, EmailTemplate>();
 builder.Services.AddTransient<IWorkflowService, WorkflowService>();
 builder.Services.AddTransient<IProcessService, ProcessService>();
 builder.Services.AddTransient<IStepService, StepService>();
+builder.Services.AddTransient<IStepConditionService, StepConditionService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddTransient<ITaskLogService, TaskLogService>();

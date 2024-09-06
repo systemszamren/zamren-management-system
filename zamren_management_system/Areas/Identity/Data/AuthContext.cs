@@ -38,6 +38,8 @@ public class AuthContext : IdentityDbContext<ApplicationUser, ApplicationRole, s
     public DbSet<WkfTaskComment> WkfTaskComments { get; set; }
     public DbSet<WkfTaskAttachment> WkfTaskAttachments { get; set; }
     public DbSet<WkfProcessStep> WkfProcessSteps { get; set; }
+
+    public DbSet<WkfProcessStepCondition> WkfProcessStepConditions { get; set; }
     public DbSet<WkfTask> WkfTasks { get; set; }
     public DbSet<WkfTaskLog> WkfTaskLogs { get; set; }
     public DbSet<WkfSequence> WkfSequences { get; set; }
@@ -587,6 +589,28 @@ public class AuthContext : IdentityDbContext<ApplicationUser, ApplicationRole, s
             .WithMany(x => x.WkfProcessSteps)
             .HasForeignKey(x => x.PrivilegeId);
 
+        //WkfProcessStepCondition
+        builder.Entity<WkfProcessStepCondition>().ToTable("wkf_process_step_condition");
+        builder.Entity<WkfProcessStepCondition>()
+            .HasOne(x => x.CurrentStep)
+            .WithMany(x => x.CurrentStepConditions)
+            .HasForeignKey(x => x.CurrentStepId);
+
+        builder.Entity<WkfProcessStepCondition>()
+            .HasOne(x => x.NextStep)
+            .WithMany(x => x.NextStepConditions)
+            .HasForeignKey(x => x.NextStepId);
+
+        builder.Entity<WkfProcessStepCondition>()
+            .HasOne(x => x.CreatedBy)
+            .WithMany(x => x.CreatedWkfProcessStepConditions)
+            .HasForeignKey(x => x.CreatedByUserId);
+
+        builder.Entity<WkfProcessStepCondition>()
+            .HasOne(x => x.ModifiedBy)
+            .WithMany(x => x.ModifiedWkfProcessStepConditions)
+            .HasForeignKey(x => x.ModifiedByUserId);
+
         //WkfTask
         builder.Entity<WkfTask>().ToTable("wkf_task");
         builder.Entity<WkfTask>()
@@ -754,31 +778,6 @@ public class AuthContext : IdentityDbContext<ApplicationUser, ApplicationRole, s
         builder.Entity<PurchaseRequisitionRequest>()
             .HasIndex(x => x.Reference)
             .IsUnique();
-
-        /*public sealed class PurchaseRequisitionRequestAttachment
-{
-    [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
-
-    [Required] public string PurchaseRequisitionRequestId { get; set; }
-    public PurchaseRequisitionRequest PurchaseRequisitionRequest { get; set; }
-
-    [Required] public string AttachmentId { get; set; }
-    public SystemAttachment Attachment { get; set; }
-
-    [Required] [StringLength(255)] public string Status { get; set; } = Common.Enums.Status.Active.ToString();
-
-    [Required] public string CreatedByUserId { get; set; }
-
-    public ApplicationUser CreatedBy { get; set; }
-
-    [Required] public DateTimeOffset CreatedDate { get; set; }
-
-    public string? ModifiedByUserId { get; set; }
-
-    public ApplicationUser? ModifiedBy { get; set; }
-
-    public DateTimeOffset? ModifiedDate { get; set; }
-}*/
 
         //PurchaseRequisitionRequestAttachment
         builder.Entity<PurchaseRequisitionRequestAttachment>().ToTable("proc_purchase_requisition_request_attachment");
