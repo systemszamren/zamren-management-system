@@ -135,11 +135,11 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 });
 
 // Configure Google authentication (from secrets.json)
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+/*builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 {
     googleOptions.ClientId = configuration["Google:ClientId"] ?? string.Empty;
     googleOptions.ClientSecret = configuration["Google:ClientSecret"] ?? string.Empty;
-});
+});*/
 
 var maxAge = Convert.ToInt32(configuration["SystemVariables:HSTSMaxAgeDays"]);
 

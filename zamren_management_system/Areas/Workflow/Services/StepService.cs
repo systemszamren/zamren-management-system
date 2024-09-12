@@ -214,7 +214,7 @@ public class StepService : IStepService
 
         if (initialSteps.Count == 1)
         {
-            //check if the initial step has a next step
+            //check if the initial step has no next step
             if (initialSteps[0].NextStepId == null)
             {
                 //number all steps

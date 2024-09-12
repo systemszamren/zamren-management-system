@@ -15,6 +15,7 @@
                 console.error('An error occurred:', err);
             } else {
                 // Handle success
+                $('.processName').text(data.process.name);
                 $('input[name="name"]').val(data.process.name);
                 $('input[name="id"]').val(data.process.id);
                 $('textarea[name="description"]').val(data.process.description);

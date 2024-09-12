@@ -124,6 +124,8 @@ public class RegisterModel : PageModel
 
     public async Task OnGetAsync(string returnUrl = null)
     {
+        if (true) Response.Redirect("/"); //REMOVE REGISTRATION PAGE
+        
         // Redirect to home if already logged in
         if (User.Identity!.IsAuthenticated)
         {

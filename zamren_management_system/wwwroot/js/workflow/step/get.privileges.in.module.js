@@ -6,7 +6,7 @@
         processId: id,
     };
 
-    ajaxDataRequest('/api/workflow/step/get-all-privileges', 'POST', data, null, function (err, data) {
+    ajaxDataRequest('/api/workflow/step/get-privileges-in-module', 'POST', data, null, function (err, data) {
         // console.log(err, data);
         if (err) {
             // Handle error

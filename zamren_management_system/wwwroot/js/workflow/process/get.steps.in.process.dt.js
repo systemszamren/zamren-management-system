@@ -47,6 +47,16 @@
             {
                 data: null,
                 render: function (data, type, row) {
+                    //if is not final step and has no next step return link to add next step, else return minus icon
+                    /*if (!row.isFinalStep && !row.nextStep.name) {
+                        if (data.order === stepsDatatable.rows().count()) {
+                            return `<a class="btn btn-outline-dark btn-sm" href="/Admin/Step/Create/${id}">Create Next Step</a>`;
+                        } else {
+                            return `<a class="btn btn-outline-dark btn-sm" href="/Admin/Step/Edit/${row.id}">Add Next Step</a>`;
+                        }
+                    } else {
+                        return row.nextStep.name ? row.nextStep.name : '<i class="fa fa-minus-circle"></i>';
+                    }*/
                     return row.nextStep.name ? row.nextStep.name : '<i class="fa fa-minus-circle"></i>';
                 }
             },
@@ -72,8 +82,8 @@
             dataSrc: 'readingOrder',
         },
         select: true,*/
-        pageLength: 10,
-        lengthMenu: [10, 25, 50, 75, 100],
+        pageLength: 50,
+        lengthMenu: [50, 100, 250, 500],
         layout: {
             topStart: {
                 buttons: [

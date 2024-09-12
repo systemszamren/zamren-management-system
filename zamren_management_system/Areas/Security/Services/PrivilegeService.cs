@@ -149,12 +149,21 @@ public class PrivilegeService : IPrivilegeService
             .OrderBy(p => p.Name)
             .ToListAsync();
     }
-    
+
     //find privileges in a module
     public async Task<ICollection<Privilege>> FindInModuleAsync(string moduleId)
     {
         return await _context.ModulePrivileges
             .Where(mp => mp.ModuleId == moduleId)
+            .Select(mp => mp.Privilege).ToListAsync();
+    }
+
+    //find privileges by module name
+    public async Task<ICollection<Privilege>> FindByModuleNameAsync(string moduleName)
+    {
+        return await _context.ModulePrivileges
+            .Include(mp => mp.Module)
+            .Where(mp => mp.Module.Name == moduleName)
             .Select(mp => mp.Privilege).ToListAsync();
     }
 

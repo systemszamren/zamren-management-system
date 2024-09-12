@@ -229,9 +229,7 @@ public class ProcessApiController : ControllerBase
 
             processDto.Id = _cypherService.Decrypt(processDto.Id!);
             if (await _processService.ProcessNameExistsExceptAsync(processDto.Name, processDto.Id))
-            {
                 return Ok(new { success = false, message = "Process with the same name already exists" });
-            }
 
             var process = await _processService.FindByIdAsync(processDto.Id);
             if (process == null)

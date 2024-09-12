@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter step description" style="height: 100px"></textarea>
+                    <textarea class="form-control" maxlength="255" id="description" name="description" rows="3" placeholder="Enter step description" style="height: 100px"></textarea>
                     <label for="description">Step Description<span class="text-danger">*</span></label>
                 </div>
 
@@ -209,7 +209,8 @@
     <script src="~/js/workflow/step/get.all.branches.js"></script>
     <script src="~/js/workflow/step/get.all.departments.js"></script>
     <script src="~/js/workflow/step/get.all.offices.js"></script>
-    <script src="~/js/workflow/step/get.all.privileges.js"></script>
+    @* <script src="~/js/workflow/step/get.all.privileges.js"></script> *@
+    <script src="~/js/workflow/step/get.privileges.in.module.js"></script>
     <script src="~/js/workflow/step/get.sla.hours.js"></script>
     <script src="~/js/workflow/step/get.all.employees.select2.js"></script>
     <script src="~/js/workflow/step/get.process.steps.js"></script>

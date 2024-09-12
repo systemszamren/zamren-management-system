@@ -417,6 +417,7 @@ public class StepApiController : ControllerBase
                 },
                 IsInitialStepString = Request.Form["isInitialStep"].FirstOrDefault(),
                 IsFinalStepString = Request.Form["isFinalStep"].FirstOrDefault(),
+                IsDepartmentHeadApprovedString = Request.Form["isDepartmentHeadApproved"].FirstOrDefault(),
                 // IsAutoApprovedString = Request.Form["isAutoApproved"].FirstOrDefault(),
                 IsAutoApprovedString = "false",
                 RequestMap = Request.Form["requestMap"].FirstOrDefault(),
@@ -457,6 +458,14 @@ public class StepApiController : ControllerBase
 
             if (string.IsNullOrEmpty(stepDto.Id))
                 return Ok(new { success = false, message = "An error occurred while processing the request" });
+            
+            //DepartmentHeadApprovalString
+            if (string.IsNullOrEmpty(stepDto.IsDepartmentHeadApprovedString))
+                stepDto.IsDepartmentHeadApproved = false;
+            else if (stepDto.IsDepartmentHeadApprovedString is "on" or "true")
+                stepDto.IsDepartmentHeadApproved = true;
+            else
+                stepDto.IsDepartmentHeadApproved = false;
 
             //IsAutoApprovedString
             if (string.IsNullOrEmpty(stepDto.IsAutoApprovedString))
@@ -465,8 +474,7 @@ public class StepApiController : ControllerBase
                 stepDto.IsAutoApproved = true;
             else
                 stepDto.IsAutoApproved = false;
-
-
+            
             //IsInitialStepString
             if (string.IsNullOrEmpty(stepDto.IsInitialStepString))
                 stepDto.IsInitialStep = false;
@@ -678,6 +686,9 @@ public class StepApiController : ControllerBase
             {
                 stepDto.Organization.Id = null;
             }
+            
+            if ((bool)stepDto.IsDepartmentHeadApproved)
+                taskIsAssignable = true;
 
             //if the step is NOT auto approved
             if ((bool)!stepDto.IsAutoApproved)
@@ -1079,9 +1090,9 @@ public class StepApiController : ControllerBase
     }
 
     //get-privileges
-    [HttpPost("get-privileges")]
+    [HttpPost("get-privileges-in-module")]
     [HasPrivilege(PrivilegeConstant.WKF_MANAGE_SYSTEM_WORKFLOW)]
-    public async Task<IActionResult> GetPrivileges()
+    public async Task<IActionResult> GetPrivilegesInModule()
     {
         try
         {
@@ -1093,6 +1104,43 @@ public class StepApiController : ControllerBase
 
             var privileges = await _privilegeService.FindInModuleAsync(process.ModuleId);
             privileges = privileges.OrderBy(p => p.Name).ToList();
+
+            //get privileges that belong to SECURITY module
+            var secPrivileges =
+                await _privilegeService.FindByModuleNameAsync(ModuleConstant.SECURITY.ToString());
+            secPrivileges = secPrivileges.OrderBy(p => p.Name).ToList();
+
+            //add the security privileges to the list of privileges
+            foreach (var secPrivilege in secPrivileges)
+                if (privileges.All(p => p.Id != secPrivilege.Id))
+                    privileges.Add(secPrivilege);
+
+            return Ok(new
+            {
+                success = true,
+                privileges = privileges.Select(privilege => new PrivilegeDto
+                {
+                    Id = _cypherService.Encrypt(privilege.Id),
+                    Name = privilege.Name,
+                    Description = privilege.Description
+                }).ToList()
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while processing the request");
+            return Ok(new { success = false, message = "An error occurred while processing the request" });
+        }
+    }
+
+    //get all privileges
+    [HttpPost("get-all-privileges")]
+    [HasPrivilege(PrivilegeConstant.WKF_MANAGE_SYSTEM_WORKFLOW)]
+    public async Task<IActionResult> GetAllPrivileges()
+    {
+        try
+        {
+            var privileges = await _privilegeService.FindAllAsync();
 
             return Ok(new
             {
@@ -1297,6 +1345,19 @@ public class StepApiController : ControllerBase
 
             //get privileges
             var privileges = await _privilegeService.FindInModuleAsync(step.Process.ModuleId);
+            privileges = privileges.OrderBy(p => p.Name).ToList();
+
+            //get privileges that belong to SECURITY module
+            var secPrivileges =
+                await _privilegeService.FindByModuleNameAsync(ModuleConstant.SECURITY.ToString());
+            secPrivileges = secPrivileges.OrderBy(p => p.Name).ToList();
+
+            //add the security privileges to the list of privileges
+            foreach (var secPrivilege in secPrivileges)
+                if (privileges.All(p => p.Id != secPrivilege.Id))
+                    privileges.Add(secPrivilege);
+            
+            
 
             //get sla hours from enum and convert to list
             var slaHoursList = Enum.GetValues(typeof(SlaHours))
