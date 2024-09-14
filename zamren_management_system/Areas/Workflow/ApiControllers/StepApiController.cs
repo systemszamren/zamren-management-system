@@ -458,7 +458,7 @@ public class StepApiController : ControllerBase
 
             if (string.IsNullOrEmpty(stepDto.Id))
                 return Ok(new { success = false, message = "An error occurred while processing the request" });
-            
+
             //DepartmentHeadApprovalString
             if (string.IsNullOrEmpty(stepDto.IsDepartmentHeadApprovedString))
                 stepDto.IsDepartmentHeadApproved = false;
@@ -474,7 +474,7 @@ public class StepApiController : ControllerBase
                 stepDto.IsAutoApproved = true;
             else
                 stepDto.IsAutoApproved = false;
-            
+
             //IsInitialStepString
             if (string.IsNullOrEmpty(stepDto.IsInitialStepString))
                 stepDto.IsInitialStep = false;
@@ -686,7 +686,7 @@ public class StepApiController : ControllerBase
             {
                 stepDto.Organization.Id = null;
             }
-            
+
             if ((bool)stepDto.IsDepartmentHeadApproved)
                 taskIsAssignable = true;
 
@@ -840,6 +840,7 @@ public class StepApiController : ControllerBase
                     },
                     Ordered = step.Ordered.ToString(),
                     Order = step.Order,
+                    HasConfigurationError = step.HasConfigurationError,
                     Process = new WkfProcessDto
                     {
                         Id = _cypherService.Encrypt(step.ProcessId),
@@ -1356,8 +1357,7 @@ public class StepApiController : ControllerBase
             foreach (var secPrivilege in secPrivileges)
                 if (privileges.All(p => p.Id != secPrivilege.Id))
                     privileges.Add(secPrivilege);
-            
-            
+
 
             //get sla hours from enum and convert to list
             var slaHoursList = Enum.GetValues(typeof(SlaHours))

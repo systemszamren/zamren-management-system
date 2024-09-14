@@ -20,6 +20,7 @@ public class WkfProcessStepDto
     public string? IsDepartmentHeadApprovedString { get; set; }
     public string? Ordered { get; set; }
     public int? Order { get; set; }
+    public bool HasConfigurationError { get; set; }
     public WkfProcessStepDto? PreviousStep { get; set; }
     public WkfProcessStepDto? NextStep { get; set; }
     // public WkfProcessDto? NextProcess { get; set; }

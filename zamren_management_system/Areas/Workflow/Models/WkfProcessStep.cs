@@ -27,7 +27,8 @@ public sealed class WkfProcessStep
     // [Required] public bool AssignToSameUserOnSendBack { get; set; } = true;
     
     // [Required] public bool AssignToSameUserOnApprove { get; set; } = true;
-
+    
+    [NotMapped] public bool HasConfigurationError { get; set; }
     [NotMapped] public bool Ordered { get; set; }
     [NotMapped] public int Order { get; set; }
 

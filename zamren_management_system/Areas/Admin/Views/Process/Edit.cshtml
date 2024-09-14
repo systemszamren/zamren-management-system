@@ -87,6 +87,19 @@
 
 
 @section Scripts {
+    <script>
+        //DELETE ME!!!!!!!!!!!!!!!!
+        $(document).ready(function () {
+            // Remove 'active' class from the first tab and its content
+            $('.nav-tabs .nav-link').removeClass('active');
+            $('.tab-content .tab-pane').removeClass('active show');
+
+            // Add 'active' class to the second tab and its content
+            $('.nav-tabs .nav-link:eq(1)').addClass('active');
+            $('.tab-content .tab-pane:eq(1)').addClass('active show');
+        });
+    
+    </script>
     <script src="~/js/workflow/process/get.process.data.js"></script>
     <script src="~/js/workflow/process/get.steps.in.process.dt.js"></script>
     <script src="~/js/workflow/step/delete.step.js"></script>

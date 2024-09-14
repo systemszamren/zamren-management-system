@@ -194,6 +194,10 @@ public class StepService : IStepService
         {
             //number all steps
             NumberingUnorderedSteps(allSteps);
+            
+            //flag all initial steps as: HasConfigurationError
+            foreach (var initialStep in initialSteps)
+                initialStep.HasConfigurationError = true;
 
             return (allSteps, CustomIdentityResult.Failed(new IdentityError
             {
@@ -219,6 +223,9 @@ public class StepService : IStepService
             {
                 //number all steps
                 NumberingUnorderedSteps(allSteps);
+                
+                //flag initial step as: HasConfigurationError
+                initialSteps[0].HasConfigurationError = true;
 
                 return (allSteps, CustomIdentityResult.Failed(new IdentityError
                 {
@@ -231,6 +238,10 @@ public class StepService : IStepService
         }
         else if (initialSteps.Count > 1)
         {
+            //flag all initial steps as: HasConfigurationError
+            foreach (var initialStep in initialSteps)
+                initialStep.HasConfigurationError = true;
+            
             return (allSteps, CustomIdentityResult.Failed(new IdentityError
             {
                 Description = "Multiple initial steps found for this process. A process can only have one initial step"
@@ -285,6 +296,9 @@ public class StepService : IStepService
         {
             //number all steps
             NumberingUnorderedSteps(allSteps);
+            
+            //flag final step as: :HasConfigurationError 
+            finalStep.HasConfigurationError = true;
 
             return (allSteps, CustomIdentityResult.Failed(new IdentityError
             {
@@ -306,38 +320,58 @@ public class StepService : IStepService
     {
         var initialSteps = allSteps.FindAll(s => s.IsInitialStep);
         if (initialSteps.Count != 1)
+        {
+            //flag all initial steps in allSteps as: HasConfigurationError, not just initialSteps
+            foreach (var initialStep in initialSteps)
+                initialStep.HasConfigurationError = true;
+
             return (allSteps, CustomIdentityResult.Failed(new IdentityError
             {
                 Description = "Multiple initial steps found for this process. A process can only have one initial step"
             }));
+        }
 
         var finalSteps = allSteps.FindAll(s => s.IsFinalStep);
         if (finalSteps.Count != 1)
+        {
+            //flag all final steps as: HasConfigurationError
+            foreach (var finalStep in finalSteps)
+                finalStep.HasConfigurationError = true;
+
             return (allSteps, CustomIdentityResult.Failed(new IdentityError
             {
                 Description = "Multiple final steps found for this process. A process can only have one final step"
             }));
+        }
 
         foreach (var step in allSteps)
         {
             switch (step)
             {
                 case { IsInitialStep: true, PreviousStepId: not null }:
+                    //flag step as: HasConfigurationError
+                    step.HasConfigurationError = true;
                     return (allSteps, CustomIdentityResult.Failed(new IdentityError
                     {
                         Description = "The first step should not have a previous step"
                     }));
                 case { IsFinalStep: true, NextStepId: not null }:
+                    //flag step as: HasConfigurationError
+                    step.HasConfigurationError = true;
                     return (allSteps, CustomIdentityResult.Failed(new IdentityError
                     {
                         Description = "The final step should not have a next step"
                     }));
                 case { IsInitialStep: false, PreviousStepId: null }:
+                    //flag step as: HasConfigurationError
+                    step.HasConfigurationError = true;
                     return (allSteps, CustomIdentityResult.Failed(new IdentityError
                     {
                         Description = "Step (" + step.Name + ") should have a previous step"
                     }));
                 case { IsFinalStep: false, NextStepId: null }:
+                    //flag step as: HasConfigurationError
+                    step.HasConfigurationError = true;
                     return (allSteps, CustomIdentityResult.Failed(new IdentityError
                     {
                         Description = "Step (" + step.Name + ") should have a next step"
@@ -412,16 +446,16 @@ public class StepService : IStepService
         WkfProcessStep step)
     {
         var users = new List<ApplicationUser>();
-        
+
         //flag to check if step can be actioned by a user with a specific role
         var searchRole = false;
-        
+
         //flag to check if step can be actioned by a user in a specific organizational unit
         var searchOrganization = false;
-        
+
         //flag to check if step can be actioned by a user with a specific role that has a specific privilege
         var searchPrivilege = false;
-        
+
         //dynamic response text
         var responseText = "";
 
@@ -471,12 +505,12 @@ public class StepService : IStepService
                     }
 
                     var usersInOrganization = new List<ApplicationUser>();
-                    
+
                     //check if organization is set
                     if (step.OrganizationId != null)
                     {
                         searchOrganization = true;
-                        
+
                         //check if branch, department or office is set
                         if (step.BranchId != null)
                         {

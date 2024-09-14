@@ -35,7 +35,21 @@
             {
                 data: null,
                 render: function (data, type, row) {
-                    return `<strong>${row.name}</strong>`;
+                    // return `<strong>${row.name}</strong>`;
+                    //if is initial or last step, add badge to name
+                    let badge = '';
+                    if (row.isInitialStep) {
+                        badge = `<span class="badge bg-primary">First</span>`;
+                    } else if (row.isFinalStep) {
+                        badge = `<span class="badge bg-dark">Last</span>`;
+                    }
+                    
+                    //if HasConfigurationError, add 'error' badge to name
+                    if (row.hasConfigurationError) {
+                        badge += ` <span class="badge bg-danger">Error</span>`;
+                    }
+                    
+                    return `<strong>${row.name} ${badge}</strong>`;
                 }
             },
             {
