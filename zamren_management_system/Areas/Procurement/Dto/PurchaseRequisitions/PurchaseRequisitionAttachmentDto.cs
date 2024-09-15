@@ -1,7 +1,6 @@
 using zamren_management_system.Areas.Common.Dto;
-using zamren_management_system.Areas.Procurement.Dto.PurchaseRequisitions;
 
-namespace zamren_management_system.Areas.Procurement.Dto.PurchaseRequisition;
+namespace zamren_management_system.Areas.Procurement.Dto.PurchaseRequisitions;
 
 public class PurchaseRequisitionAttachmentDto
 {

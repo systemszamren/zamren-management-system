@@ -6,10 +6,10 @@ using zamren_management_system.Areas.Common.Enums;
 using zamren_management_system.Areas.Common.Interfaces;
 using zamren_management_system.Areas.Common.Models;
 using zamren_management_system.Areas.Identity.Data;
-using zamren_management_system.Areas.Procurement.Dto.PurchaseRequisition;
 using zamren_management_system.Areas.Procurement.Dto.PurchaseRequisitions;
 using zamren_management_system.Areas.Procurement.Interfaces.PurchaseRequisition;
 using zamren_management_system.Areas.Procurement.Interfaces.PurchaseRequisitions;
+using zamren_management_system.Areas.Procurement.Models;
 using zamren_management_system.Areas.Security.Configurations.PrivilegeAuthentication;
 using zamren_management_system.Areas.Security.Dto;
 using zamren_management_system.Areas.Security.Enums;
@@ -169,7 +169,7 @@ public class PurchaseRequisitionApiController : ControllerBase
                 return Ok(new { success = false, message = "Process not found" });
 
             //get process 1st step Id
-            var currentStep =  await _processService.GetFirstStepAsync(processId);
+            var currentStep = await _processService.GetFirstStepAsync(processId);
             if (currentStep == null)
                 return Ok(new { success = false, message = "First step not found" });
 
@@ -320,13 +320,13 @@ public class PurchaseRequisitionApiController : ControllerBase
                 return Ok(new { success = false, message = "Department is required" });
 
             // if (string.IsNullOrEmpty(purchaseRequisitionDto.ItemDescription))
-                // return Ok(new { success = false, message = "Item description is required" });
+            // return Ok(new { success = false, message = "Item description is required" });
 
             // if (string.IsNullOrEmpty(purchaseRequisitionDto.QuantityString))
-                // return Ok(new { success = false, message = "Quantity is required" });
+            // return Ok(new { success = false, message = "Quantity is required" });
 
             // if (string.IsNullOrEmpty(purchaseRequisitionDto.EstimatedCostString))
-                // return Ok(new { success = false, message = "Estimated cost is required" });
+            // return Ok(new { success = false, message = "Estimated cost is required" });
 
             if (string.IsNullOrEmpty(purchaseRequisitionDto.Justification))
                 return Ok(new { success = false, message = "Justification is required" });
@@ -349,7 +349,7 @@ public class PurchaseRequisitionApiController : ControllerBase
                 await _workflowService.GenerateReferenceNumber(ModuleConstant.PROCURMENT.GetModuleCode()!);
 
             //create purchase requisition
-            var purchaseRequisition = new Models.PurchaseRequisition
+            var purchaseRequisition = new PurchaseRequisition
             {
                 RequestingOfficerUserId = currentUserId!,
                 DepartmentId = purchaseRequisitionDto.DepartmentId,
