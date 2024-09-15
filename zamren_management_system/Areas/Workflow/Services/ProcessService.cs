@@ -24,6 +24,14 @@ public class ProcessService : IProcessService
             .ToListAsync();
     }
 
+    public async Task<ICollection<WkfProcess>> GetParentProcessesInModuleAsync(string moduleId)
+    {
+        return await _context.WkfProcesses
+            .Include(p => p.Module)
+            .Where(p => p.ModuleId == moduleId && p.ParentProcessId == null)
+            .ToListAsync();
+    }
+
     public async Task<ICollection<WkfProcess>> FindByModuleCode(string moduleId)
     {
         return await _context.WkfProcesses

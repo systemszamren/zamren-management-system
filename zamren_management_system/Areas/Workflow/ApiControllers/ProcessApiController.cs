@@ -60,6 +60,7 @@ public class ProcessApiController : ControllerBase
                     Name = process.Name,
                     Counter = index + 1,
                     Description = process.Description,
+                    ParentProcessId = process.ParentProcessId,
                     Module = new ModuleDto
                     {
                         Id = _cypherService.Encrypt(process.ModuleId),
@@ -112,7 +113,6 @@ public class ProcessApiController : ControllerBase
                     Id = _cypherService.Encrypt(process.Id),
                     Name = process.Name,
                     Description = process.Description,
-                    StartingStepId = process.StartingStepId,
                     Module = new ModuleDto
                     {
                         Id = _cypherService.Encrypt(process.ModuleId),
@@ -141,7 +141,7 @@ public class ProcessApiController : ControllerBase
             {
                 Name = Request.Form["name"].FirstOrDefault(),
                 Description = Request.Form["description"].FirstOrDefault(),
-                StartingStepId = Request.Form["startingStepId"].FirstOrDefault()!,
+                ParentProcessId = Request.Form["parentProcessId"].FirstOrDefault()!,
                 Module = new ModuleDto
                 {
                     Id = Request.Form["moduleId"].FirstOrDefault()!
@@ -156,6 +156,15 @@ public class ProcessApiController : ControllerBase
 
             if (string.IsNullOrEmpty(processDto.Module.Id))
                 return Ok(new { success = false, message = "Module is required" });
+
+            if (!string.IsNullOrEmpty(processDto.ParentProcessId))
+            {
+                processDto.ParentProcessId = _cypherService.Decrypt(processDto.ParentProcessId);
+                if (await _processService.FindByIdAsync(processDto.ParentProcessId) == null)
+                {
+                    return Ok(new { success = false, message = "Parent process not found" });
+                }
+            }
 
             processDto.Name = _util.TrimAndRemoveExtraSpacesAndToUpperCase(processDto.Name);
 
@@ -177,7 +186,7 @@ public class ProcessApiController : ControllerBase
                 Name = processDto.Name!,
                 Description = processDto.Description,
                 ModuleId = processDto.Module.Id,
-                StartingStepId = processDto.StartingStepId,
+                ParentProcessId = processDto.ParentProcessId,
                 CreatedByUserId = currentUserId!,
                 CreatedDate = DateTimeOffset.UtcNow
             });
@@ -200,6 +209,7 @@ public class ProcessApiController : ControllerBase
             {
                 Id = Request.Form["id"].FirstOrDefault(),
                 Name = Request.Form["name"].FirstOrDefault(),
+                ParentProcessId = Request.Form["parentProcessId"].FirstOrDefault()!,
                 Description = Request.Form["description"].FirstOrDefault(),
                 Module = new ModuleDto
                 {
@@ -215,6 +225,15 @@ public class ProcessApiController : ControllerBase
 
             if (string.IsNullOrEmpty(processDto.Id))
                 return Ok(new { success = false, message = "An error occurred while processing the request" });
+
+            if (!string.IsNullOrEmpty(processDto.ParentProcessId))
+            {
+                processDto.ParentProcessId = _cypherService.Decrypt(processDto.ParentProcessId);
+                if (await _processService.FindByIdAsync(processDto.ParentProcessId) == null)
+                {
+                    return Ok(new { success = false, message = "Parent process not found" });
+                }
+            }
 
             processDto.Name = _util.TrimAndRemoveExtraSpacesAndToUpperCase(processDto.Name);
 
@@ -239,6 +258,7 @@ public class ProcessApiController : ControllerBase
 
             process.Name = processDto.Name!;
             process.Description = processDto.Description;
+            process.ParentProcessId = processDto.ParentProcessId;
             process.ModifiedByUserId = _userManager.GetUserId(User);
             process.ModifiedDate = DateTimeOffset.UtcNow;
             await _processService.UpdateAsync(process);
@@ -281,6 +301,37 @@ public class ProcessApiController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while processing the request");
+            return Ok(new { success = false, message = "An error occurred while processing the request" });
+        }
+    }
+
+    //get-parent-processes-in-module
+    [HttpPost("get-parent-processes-in-module")]
+    [HasPrivilege(PrivilegeConstant.WKF_MANAGE_SYSTEM_WORKFLOW)]
+    public async Task<IActionResult> GetParentProcessesInModule([FromForm] string moduleId)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(moduleId))
+                return Ok(new { success = false, message = "An error occurred while processing the request" });
+
+            moduleId = _cypherService.Decrypt(moduleId);
+            var processes = await _processService.GetParentProcessesInModuleAsync(moduleId);
+
+            return Ok(new
+            {
+                success = true,
+                processes = processes.Select(process => new WkfProcessDto
+                {
+                    Id = _cypherService.Encrypt(process.Id),
+                    Name = process.Name,
+                    Description = process.Description
+                }).ToList()
+            });
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "An error occurred while processing the request");
             return Ok(new { success = false, message = "An error occurred while processing the request" });
         }
     }

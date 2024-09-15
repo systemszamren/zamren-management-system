@@ -60,9 +60,9 @@
             let selectedUserId = $('#selectedUserId').val();
             if (!selectedUserId) {
                 $('#roleId').prop('disabled', false);
-                $('#officeId').prop('disabled', false);
-                $('#departmentId').prop('disabled', false);
-                $('#branchId').prop('disabled', false);
+                // $('#officeId').prop('disabled', false);
+                // $('#departmentId').prop('disabled', false);
+                // $('#branchId').prop('disabled', false);
                 $('#organizationId').prop('disabled', false);
                 $('#actioningUserId').prop('disabled', false);
             }

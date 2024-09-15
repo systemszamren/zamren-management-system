@@ -168,7 +168,7 @@
                 </div>
 
                 <div class="mb-3 form-floating">
-                    <select class="form-select" id="branchId" name="branchId" aria-label="branch id">
+                    <select class="form-select" id="branchId" name="branchId" aria-label="branch id" disabled="disabled">
                         <option value="">- Select Branch -</option>
                     </select>
                     <label for="branchId">Branch</label>
@@ -176,7 +176,7 @@
                 </div>
 
                 <div class="mb-3 form-floating">
-                    <select class="form-select" id="departmentId" name="departmentId" aria-label="department id">
+                    <select class="form-select" id="departmentId" name="departmentId" aria-label="department id" disabled="disabled">
                         <option value="">- Select Department -</option>
                     </select>
                     <label for="departmentId">Department</label>
@@ -184,7 +184,7 @@
                 </div>
 
                 <div class="mb-3 form-floating">
-                    <select class="form-select" id="officeId" name="officeId" aria-label="office id">
+                    <select class="form-select" id="officeId" name="officeId" aria-label="office id" disabled="disabled">
                         <option value="">- Select Office -</option>
                     </select>
                     <label for="officeId">Office</label>
@@ -205,10 +205,11 @@
 
 @section Scripts {
     <script src="~/js/workflow/step/get.process.data.js"></script>
+    <script src="~/js/workflow/step/manage.organization.structure.js"></script>
     <script src="~/js/workflow/step/get.all.organizations.js"></script>
-    <script src="~/js/workflow/step/get.all.branches.js"></script>
-    <script src="~/js/workflow/step/get.all.departments.js"></script>
-    <script src="~/js/workflow/step/get.all.offices.js"></script>
+    @* <script src="~/js/workflow/step/get.all.branches.js"></script> *@
+    @* <script src="~/js/workflow/step/get.all.departments.js"></script> *@
+    @* <script src="~/js/workflow/step/get.all.offices.js"></script> *@
     @* <script src="~/js/workflow/step/get.all.privileges.js"></script> *@
     <script src="~/js/workflow/step/get.privileges.in.module.js"></script>
     <script src="~/js/workflow/step/get.sla.hours.js"></script>

@@ -43,7 +43,18 @@
             return markup;
         },
         templateResult: formatRepo,
-        templateSelection: formatRepoSelection,
+        templateSelection: formatRepoSelection
+
+    }).on("select2:select", function (e) {
+        $('#isChildProcess').prop('disabled', false).prop('checked', false);
+        $('#parentProcessId').empty();
+        $('#parentProcessGroup').hide();
+
+    }).on("select2:unselect", function (e) {
+        $('#isChildProcess').prop('disabled', true).prop('checked', false);
+        $('#parentProcessId').empty();
+        $('#parentProcessGroup').hide();
+
     }).on("select2:open", function () {
         document.querySelector('.select2-search__field').focus();
     });

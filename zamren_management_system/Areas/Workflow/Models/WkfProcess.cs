@@ -12,9 +12,8 @@ public sealed class WkfProcess
 
     [Required] [StringLength(255)] public string Description { get; set; }
 
-     public string? StartingStepId { get; set; }
-    public WkfProcessStep StartingProcessStep { get; set; }
-
+    public string? ParentProcessId { get; set; }
+    public WkfProcess? ParentProcess { get; set; }
     [Required] public string ModuleId { get; set; }
     public Module Module { get; set; }
 
@@ -34,4 +33,5 @@ public sealed class WkfProcess
     public IEnumerable<WkfProcessStep>? WkfSteps { get; set; }
     public IEnumerable<WkfTask>? WkfCurrentTasks { get; set; }
     public IEnumerable<WkfTask>? WkfPreviousTasks { get; set; }
+    public IEnumerable<WkfProcess>? ChildProcesses { get; set; }
 }

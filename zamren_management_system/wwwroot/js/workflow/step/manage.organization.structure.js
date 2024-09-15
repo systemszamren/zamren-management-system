@@ -12,22 +12,22 @@
     organizationIdSelect.change(function () {
         let orgId = $(this).val();
         if (orgId) {
-            departmentIdSelect.empty().prop('disabled', true);
-            officeIdSelect.empty().prop('disabled', true);
-            
+            departmentIdSelect.html(`<option value="">- Select Department -</option>`).prop('disabled', true);
+            officeIdSelect.html(`<option value="">- Select Office -</option>`).prop('disabled', true);
+
             ajaxDataRequest('/api/workflow/step/get-branches-by-organization', 'POST', {organizationId: orgId}, null, function (err, data) {
                 if (err) {
                     console.error('An error occurred:', err);
                 } else {
-                    console.log(data.branches);
+                    // console.log(data.branches);
                     populateSelectElement(data.branches, 'branchId', '- Select Branch -', null, 'plainId', 'name');
                     branchIdSelect.prop('disabled', false);
                 }
             });
         } else {
-            branchIdSelect.empty().prop('disabled', true);
-            departmentIdSelect.empty().prop('disabled', true);
-            officeIdSelect.empty().prop('disabled', true);
+            branchIdSelect.html(`<option value="">- Select Branch -</option>`).prop('disabled', true);
+            departmentIdSelect.html(`<option value="">- Select Department -</option>`).prop('disabled', true);
+            officeIdSelect.html(`<option value="">- Select Office -</option>`).prop('disabled', true);
         }
     });
 
@@ -35,8 +35,8 @@
         let branchId = $(this).val();
         // console.log(branchId);
         if (branchId) {
-            officeIdSelect.empty().prop('disabled', true);
-            
+            officeIdSelect.html(`<option value="">- Select Office -</option>`).prop('disabled', true);
+
             ajaxDataRequest('/api/workflow/step/get-departments-by-branch', 'POST', {branchId: branchId}, null, function (err, data) {
                 if (err) {
                     console.error('An error occurred:', err);
@@ -46,7 +46,8 @@
                 }
             });
         } else {
-            departmentIdSelect.empty().prop('disabled', true);
+            departmentIdSelect.html(`<option value="">- Select Department -</option>`).prop('disabled', true);
+            officeIdSelect.html(`<option value="">- Select Office -</option>`).prop('disabled', true);
         }
     });
 
@@ -62,8 +63,7 @@
                 }
             });
         } else {
-            officeIdSelect.empty().prop('disabled', true);
+            officeIdSelect.html(`<option value="">- Select Office -</option>`).prop('disabled', true);
         }
     });
-
 });

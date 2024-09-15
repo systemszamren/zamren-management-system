@@ -508,14 +508,14 @@ public class AuthContext : IdentityDbContext<ApplicationUser, ApplicationRole, s
             .HasForeignKey(x => x.ModifiedByUserId);
 
         builder.Entity<WkfProcess>()
-            .HasOne(x => x.StartingProcessStep)
-            .WithMany(x => x.StartingProcesses)
-            .HasForeignKey(x => x.StartingStepId);
-
-        builder.Entity<WkfProcess>()
             .HasOne(x => x.Module)
             .WithMany(x => x.WkfProcesses)
             .HasForeignKey(x => x.ModuleId);
+
+        builder.Entity<WkfProcess>()
+            .HasOne(x => x.ParentProcess)
+            .WithMany(x => x.ChildProcesses)
+            .HasForeignKey(x => x.ParentProcessId);
 
         //WkfProcessStep
         builder.Entity<WkfProcessStep>().ToTable("wkf_process_step");

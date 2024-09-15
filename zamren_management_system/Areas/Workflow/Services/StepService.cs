@@ -194,7 +194,7 @@ public class StepService : IStepService
         {
             //number all steps
             NumberingUnorderedSteps(allSteps);
-            
+
             //flag all initial steps as: HasConfigurationError
             foreach (var initialStep in initialSteps)
                 initialStep.HasConfigurationError = true;
@@ -223,7 +223,7 @@ public class StepService : IStepService
             {
                 //number all steps
                 NumberingUnorderedSteps(allSteps);
-                
+
                 //flag initial step as: HasConfigurationError
                 initialSteps[0].HasConfigurationError = true;
 
@@ -241,7 +241,7 @@ public class StepService : IStepService
             //flag all initial steps as: HasConfigurationError
             foreach (var initialStep in initialSteps)
                 initialStep.HasConfigurationError = true;
-            
+
             return (allSteps, CustomIdentityResult.Failed(new IdentityError
             {
                 Description = "Multiple initial steps found for this process. A process can only have one initial step"
@@ -296,7 +296,7 @@ public class StepService : IStepService
         {
             //number all steps
             NumberingUnorderedSteps(allSteps);
-            
+
             //flag final step as: :HasConfigurationError 
             finalStep.HasConfigurationError = true;
 
@@ -343,6 +343,11 @@ public class StepService : IStepService
                 Description = "Multiple final steps found for this process. A process can only have one final step"
             }));
         }
+        
+        // Group steps by PreviousStepId
+        var groupedSteps = allSteps.GroupBy(s => s.PreviousStepId).ToList();
+        
+        // Check if there are any steps with no previous step
 
         foreach (var step in allSteps)
         {

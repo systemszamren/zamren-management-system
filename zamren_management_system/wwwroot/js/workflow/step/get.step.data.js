@@ -119,7 +119,7 @@
                     $('#actioningUserId').prop('disabled', true).val(null).trigger("change");
                 }
 
-                console.log(step.isDepartmentHeadApproved);
+                // console.log(step.isDepartmentHeadApproved);
                 if (step.isDepartmentHeadApproved === true) { //if checked 
                     $('#actioningUserId').prop('disabled', true).val(null).trigger("change");
                     $('#roleId').prop('disabled', true).val(null);

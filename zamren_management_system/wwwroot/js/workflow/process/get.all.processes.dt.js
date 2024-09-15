@@ -14,7 +14,19 @@ $(document).ready(function () {
         },
         columns: [
             {data: "counter", name: "counter"},
-            {data: "name", name: "name"},
+            // {data: "name", name: "name"},
+            {
+                data: null,
+                render: function (data, type, row) {
+                    // return row.name;
+                    //if process is a child process add badge
+                    if (row.parentProcessId) {
+                        return `${row.name} <span class="badge bg-info">Child Process</span>`;
+                    } else {
+                        return row.name;
+                    }
+                },
+            },
             {
                 data: null,
                 render: function (data, type, row) {

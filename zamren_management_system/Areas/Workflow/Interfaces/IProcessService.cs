@@ -15,5 +15,5 @@ public interface IProcessService
     Task<bool> ProcessNameExistsExceptAsync(string name, string processId);
     Task<ICollection<WkfProcessStep>> FindStepsAsync(string processId);
     Task<int> CountStepsAsync(string processId);
-
+    Task<ICollection<WkfProcess>> GetParentProcessesInModuleAsync(string moduleId);
 }

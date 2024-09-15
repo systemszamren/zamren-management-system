@@ -55,9 +55,9 @@
 
     }).on("select2:unselect", function (e) {
         $('#roleId').prop('disabled', false);
-        $('#officeId').prop('disabled', false);
-        $('#departmentId').prop('disabled', false);
-        $('#branchId').prop('disabled', false);
+        // $('#officeId').prop('disabled', false);
+        // $('#departmentId').prop('disabled', false);
+        // $('#branchId').prop('disabled', false);
         $('#organizationId').prop('disabled', false);
 
     }).on("select2:open", function () {

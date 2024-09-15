@@ -7,7 +7,7 @@
             console.error('An error occurred:', err);
         } else {
             // Handle success
-            populateSelectElement(data.organizations, 'organizationId', '- Select Organization -', null, 'id', 'name');
+            populateSelectElement(data.organizations, 'organizationId', '- Select Organization -', null, 'plainId', 'name');
         }
     });
 });

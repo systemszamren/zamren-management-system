@@ -10,6 +10,6 @@ public class WkfProcessDto
      public int Counter { get; set; }
      public string? Name { get; set; }
      public string? Description { get; set; }
-     public string? StartingStepId { get; set; }
+     public string? ParentProcessId { get; set; }
      public ModuleDto? Module { get; set; }
 }

@@ -148,6 +148,11 @@ public class StepApiController : ControllerBase
             if (string.IsNullOrEmpty(stepDto.Name))
                 return Ok(new { success = false, message = "Step name is required" });
 
+            //check if step with name already exists
+            var stepExists = await _stepService.FindByNameAsync(stepDto.Name);
+            if (stepExists != null)
+                return Ok(new { success = false, message = "Step with the same name already exists: " + stepDto.Name });
+
             if (string.IsNullOrEmpty(stepDto.Description))
                 return Ok(new { success = false, message = "Step description is required" });
 
@@ -493,6 +498,11 @@ public class StepApiController : ControllerBase
 
             if (string.IsNullOrEmpty(stepDto.Name))
                 return Ok(new { success = false, message = "Step name is required" });
+
+            //check if step with name already exists
+            var stepExists = await _stepService.FindByNameAsync(stepDto.Name);
+            if (stepExists != null && stepExists.Id != stepDto.Id)
+                return Ok(new { success = false, message = "Step with the same name already exists: " + stepDto.Name });
 
             if (string.IsNullOrEmpty(stepDto.Description))
                 return Ok(new { success = false, message = "Step description is required" });
@@ -947,7 +957,6 @@ public class StepApiController : ControllerBase
                     Id = _cypherService.Encrypt(process.Id),
                     Name = process.Name,
                     Description = process.Description,
-                    StartingStepId = process.StartingStepId,
                     Module = new ModuleDto
                     {
                         Id = _cypherService.Encrypt(process.ModuleId),
@@ -978,6 +987,7 @@ public class StepApiController : ControllerBase
                 organizations = organizations.Select(organization => new OrganizationDto
                 {
                     Id = _cypherService.Encrypt(organization.Id),
+                    PlainId = organization.Id,
                     Name = organization.Name,
                     Description = organization.Description
                 }).ToList()
