@@ -39,9 +39,9 @@
                     //if is initial or last step, add badge to name
                     let badge = '';
                     if (row.isInitialStep) {
-                        badge = `<span class="badge bg-primary">First</span>`;
+                        badge = `<span class="badge bg-primary">First Step</span>`;
                     } else if (row.isFinalStep) {
-                        badge = `<span class="badge bg-dark">Last</span>`;
+                        badge = `<span class="badge bg-dark">Last Step</span>`;
                     }
                     
                     //if HasConfigurationError, add 'error' badge to name

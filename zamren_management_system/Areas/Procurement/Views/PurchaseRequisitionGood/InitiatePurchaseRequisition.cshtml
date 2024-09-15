@@ -1,0 +1,124 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewBag.Title = "Purchase Requisition Form | Procurement";
+    Layout = "_Layout";
+}
+
+<nav style="--bs-breadcrumb-divider: '>'; float: right" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="Backoffice" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Procurement</li>
+    </ol>
+</nav>
+
+<h3 class="processName">Process Name Here</h3>
+<hr>
+
+<form method="POST" class="row" enctype="multipart/form-data" id="purchaseRequisitionForm">
+    <div class="col-lg-8">
+        <!-- Select2 -->
+        <div class="card mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h5 class="">
+                    <i class="fa fa-clipboard"></i>
+                    <span class="stepName">Purchase Requisition Form (PRF)</span>
+                </h5>
+            </div>
+            <div class="card-body">
+
+                <div>
+                    <div class="mb-4">
+                        <label for="requestingOfficer" class="form-label m-0">Requesting Officer</label>
+                        <input type="text" class="form-control currentUserFullName" id="requestingOfficer" required readonly="readonly">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="organizationId" class="form-label m-0">Requesting Organization</label>
+                        <select class="form-select" id="organizationId" name="organizationId" aria-label="organization id">
+                            <option value="">- Select Organization -</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="branchId" class="form-label m-0">Requesting Branch</label>
+                        <select class="form-select" id="branchId" name="branchId" aria-label="branch id" disabled="disabled">
+                            <option value="">- Select Branch -</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="departmentId" class="form-label m-0">Requesting Department</label>
+                        <select class="form-select" id="departmentId" name="departmentId" aria-label="department id" disabled="disabled">
+                            <option value="">- Select Department -</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="officeId" class="form-label m-0">Requesting Office</label>
+                        <select class="form-select" id="officeId" name="officeId" aria-label="office id" disabled="disabled">
+                            <option value="">- Select Office -</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="itemDescription" class="form-label m-0">Item/Service Description</label>
+                        <textarea class="form-control" maxlength="255" id="itemDescription" name="itemDescription" rows="3" placeholder="Describe the item or service" required></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="quantity" class="form-label m-0">Quantity</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" placeholder="Enter quantity" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="estimatedCost" class="form-label m-0">Estimated Cost (ZMW)</label>
+                        <input type="number" class="form-control" id="estimatedCost" name="estimatedCost" min="1" placeholder="Enter the estimated cost" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="justification" class="form-label m-0">Justification</label>
+                        <textarea class="form-control" maxlength="255" id="justification" name="justification" rows="3" placeholder="Provide justification for the purchase" required></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="files" class="form-label m-0">Attach Supporting Document(s)</label>
+                        <input type="file" id="files" class="form-control" name="files" multiple accept=".png,.jpg,.jpeg,.pdf">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4" style="max-height: 100vh">
+        <div class="card">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h5><i class="fa fa-comments"></i> Comments</h5>
+            </div>
+            <div class="card-body">
+
+                @await Html.PartialAsync("~/Areas/Workflow/Views/Shared/WkfComments.cshtml")
+
+                <div class="mt-3">
+                    <div class="btn-group d-flex justify-content-center">
+                        <button type="button" class="btn btn-success">Submit</button>
+                        @* <button type="button" class="btn btn-primary">Send Back</button> *@
+                        @* <button type="button" class="btn btn-danger">Reject</button> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</form>
+
+@section Scripts {
+    <script src="~/js/procurement/purchase-requisition-good/get.purchase.requisition.data.js"></script>
+    <script src="~/js/workflow/tasks/get.task.comments.and.attachments.js"></script>
+    <script src="~/js/workflow/tasks/manage.task.comments.and.attachments.js"></script>
+    <script src="~/js/procurement/manage.organization.structure.js"></script>
+    <script src="~/js/procurement/purchase-requisition-good/submit.purchase.requisition.form.js"></script>
+}

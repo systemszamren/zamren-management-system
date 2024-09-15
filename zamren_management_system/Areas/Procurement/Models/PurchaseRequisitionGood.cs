@@ -1,17 +1,23 @@
 using System.ComponentModel.DataAnnotations;
 using zamren_management_system.Areas.Identity.Data;
-using zamren_management_system.Areas.Procurement.Models;
-using zamren_management_system.Areas.Workflow.Models;
 
-namespace zamren_management_system.Areas.Security.Models;
+namespace zamren_management_system.Areas.Procurement.Models;
 
-public sealed class Department
+public sealed class PurchaseRequisitionGood
 {
     [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
 
-    [StringLength(255)] public string Name { get; set; }
+    [Required] public string PurchaseRequisitionId { get; set; }
+    public PurchaseRequisition PurchaseRequisition { get; set; }
 
     [Required] [StringLength(255)] public string Description { get; set; }
+
+    [Required] public int Quantity { get; set; }
+
+    [Required] public decimal EstimatedCost { get; set; }
+    
+    public string? VendorUserId { get; set; }
+    public ApplicationUser? VendorUser { get; set; }
 
     [Required] [StringLength(255)] public string Status { get; set; } = Common.Enums.Status.Active.ToString();
 
@@ -26,11 +32,4 @@ public sealed class Department
     public ApplicationUser? ModifiedBy { get; set; }
 
     public DateTimeOffset? ModifiedDate { get; set; }
-    
-    public string BranchId { get; set; }
-    
-    public Branch Branch { get; set; }
-    public IEnumerable<Office>? Offices { get; set; }
-    public IEnumerable<WkfProcessStep>? WkfSteps { get; set; }
-    public IEnumerable<PurchaseRequisition>? PurchaseRequisitions { get; set; }
 }

@@ -122,6 +122,48 @@ public class StepService : IStepService
             .Include(s => s.Organization)
             .FirstOrDefaultAsync(s => s.Name == name);
     }
+    
+    //FindByNameExceptAsync
+    public async Task<WkfProcessStep?> FindByNameExceptAsync(string name, string stepId)
+    {
+        return await _context.WkfProcessSteps
+            .Include(s => s.Role)
+            .Include(s => s.Process)
+            .Include(s => s.ActioningUser)
+            .Include(s => s.Office)
+            .Include(s => s.Department)
+            .Include(s => s.Branch)
+            .Include(s => s.Organization)
+            .FirstOrDefaultAsync(s => s.Name == name && s.Id != stepId);
+    }
+    
+    //GetByNameInProcessExceptAsync
+    public async Task<WkfProcessStep?> GetByNameInProcessExceptAsync(string name, string processId, string stepId)
+    {
+        return await _context.WkfProcessSteps
+            .Include(s => s.Role)
+            .Include(s => s.Process)
+            .Include(s => s.ActioningUser)
+            .Include(s => s.Office)
+            .Include(s => s.Department)
+            .Include(s => s.Branch)
+            .Include(s => s.Organization)
+            .FirstOrDefaultAsync(s => s.Name == name && s.ProcessId == processId && s.Id != stepId);
+    }
+    
+    //GetByNameInProcessAsync
+    public async Task<WkfProcessStep?> GetByNameInProcessAsync(string name, string processId)
+    {
+        return await _context.WkfProcessSteps
+            .Include(s => s.Role)
+            .Include(s => s.Process)
+            .Include(s => s.ActioningUser)
+            .Include(s => s.Office)
+            .Include(s => s.Department)
+            .Include(s => s.Branch)
+            .Include(s => s.Organization)
+            .FirstOrDefaultAsync(s => s.Name == name && s.ProcessId == processId);
+    }
 
     public async Task<List<WkfProcessStep>> FindByProcessIdAsync(string processId)
     {

@@ -2,7 +2,6 @@ using System.ComponentModel;
 using zamren_management_system.Areas.Common.Attributes;
 using zamren_management_system.Areas.Security.Attributes;
 using zamren_management_system.Areas.Security.Enums;
-using zamren_management_system.Areas.Security.Enums.PurchaseRequisitionProcess;
 
 namespace zamren_management_system.Areas.Common.Enums;
 
@@ -33,7 +32,7 @@ public static class CustomExtensions
         // Return the code value if the attribute exists; otherwise, null
         return attribute?.Code;
     }
-    
+
     //GetProcessId
     public static string? GetProcessId(this ProcessConstant process)
     {
@@ -47,24 +46,6 @@ public static class CustomExtensions
         if (fieldInfo == null) return string.Empty;
         var attribute =
             fieldInfo.GetCustomAttributes(typeof(ProcessId), false).FirstOrDefault() as ProcessId;
-
-        // Return the id value if the attribute exists; otherwise, null
-        return attribute?.Id;
-    }
-    
-    //GetProcessStepId
-    public static string? GetProcessStepId(this ProcessStepConstant step)
-    {
-        // Get the type of the enum
-        var type = step.GetType();
-
-        // Get the field info for this type
-        var fieldInfo = type.GetField(step.ToString());
-
-        // Get the StepId attribute if it exists
-        if (fieldInfo == null) return string.Empty;
-        var attribute =
-            fieldInfo.GetCustomAttributes(typeof(StepId), false).FirstOrDefault() as StepId;
 
         // Return the id value if the attribute exists; otherwise, null
         return attribute?.Id;

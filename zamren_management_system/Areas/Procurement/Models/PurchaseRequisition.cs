@@ -4,7 +4,7 @@ using zamren_management_system.Areas.Security.Models;
 
 namespace zamren_management_system.Areas.Procurement.Models;
 
-public sealed class PurchaseRequisitionRequest
+public sealed class PurchaseRequisition
 {
     [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
 
@@ -25,11 +25,11 @@ public sealed class PurchaseRequisitionRequest
     public string? OfficeId { get; set; }
     public Office? Office { get; set; }
     
-    [Required] [StringLength(255)] public string ItemDescription { get; set; }
+    /*[Required] [StringLength(255)] public string ItemDescription { get; set; }
 
     [Required] public int Quantity { get; set; }
 
-    [Required] public decimal EstimatedCost { get; set; }
+    [Required] public decimal EstimatedCost { get; set; }*/
 
     [Required] [StringLength(255)] public string Justification { get; set; }
 
@@ -46,5 +46,7 @@ public sealed class PurchaseRequisitionRequest
     public ApplicationUser? ModifiedBy { get; set; }
 
     public DateTimeOffset? ModifiedDate { get; set; }
-    public IEnumerable<PurchaseRequisitionRequestAttachment>? PurchaseRequisitionRequestAttachments { get; set; }
+    public IEnumerable<PurchaseRequisitionAttachment>? PurchaseRequisitionAttachments { get; set; }
+    public IEnumerable<PurchaseRequisitionGood>? PurchaseRequisitionGoods { get; set; }
+    public IEnumerable<PurchaseRequisitionService>? PurchaseRequisitionServices { get; set; }
 }

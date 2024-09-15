@@ -36,11 +36,36 @@ public interface IStepService
     Task<WkfProcessStep?> FindByIdAsync(string id);
 
     /// <summary>
+    ///     Find a step by its name in a process
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="processId"></param>
+    /// <returns></returns>
+    Task<WkfProcessStep?> GetByNameInProcessAsync(string name, string processId);
+
+    /// <summary>
+    ///     Find a step by its name in a process except the current step
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="processId"></param>
+    /// <param name="stepId"></param>
+    /// <returns></returns>
+    Task<WkfProcessStep?> GetByNameInProcessExceptAsync(string name, string processId, string stepId);
+
+    /// <summary>
     ///     Find a step by its name
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
     Task<WkfProcessStep?> FindByNameAsync(string name);
+
+    /// <summary>
+    ///     Find a step by its name except the current step
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="stepId"></param>
+    /// <returns></returns>
+    Task<WkfProcessStep?> FindByNameExceptAsync(string name, string stepId);
 
     /// <summary>
     ///     Find a step by process id
@@ -111,7 +136,8 @@ public interface IStepService
     /// </summary>
     /// <param name="step"></param>
     /// <returns> List of users to perform an action in a step </returns>
-    Task<(IEnumerable<ApplicationUser> Users, CustomIdentityResult response)> FindActioningUsersAsync(WkfProcessStep step);
+    Task<(IEnumerable<ApplicationUser> Users, CustomIdentityResult response)> FindActioningUsersAsync(
+        WkfProcessStep step);
 
     /// <summary>
     ///     Get first step in a process

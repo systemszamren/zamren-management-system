@@ -65,6 +65,8 @@
       <AdditionalFiles Include="Areas\Admin\Views\Module\Index.cshtml" />
       <AdditionalFiles Include="Areas\Backoffice\Views\Dashboard\Index.cshtml" />
       <AdditionalFiles Include="Areas\Client\Views\Shared\_Layout.cshtml" />
+      <AdditionalFiles Include="Areas\Procurement\Views\PurchaseRequisitionGood\InitiatePurchaseRequisitionOfServices.cshtml" />
+      <AdditionalFiles Include="Areas\Procurement\Views\PurchaseRequisitionGood\ReviewPurchaseRequisition.cshtml" />
       <AdditionalFiles Include="Areas\Procurement\Views\_ViewImports.cshtml" />
     </ItemGroup>
 

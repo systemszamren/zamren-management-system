@@ -6,7 +6,7 @@ namespace zamren_management_system.Areas.Procurement.Controllers.PurchaseRequisi
 [Authorize(Roles = "EMPLOYEE")]
 // [Route("procurement")]
 [Area("Procurement")]
-public class PurchaseRequisitionController : Controller
+public class PurchaseRequisitionServicesController : Controller
 {
     // [HttpGet("/Procurement/PurchaseRequisition/InitiatePurchaseRequisition")]
     public IActionResult InitiatePurchaseRequisition([FromQuery] string? reference)

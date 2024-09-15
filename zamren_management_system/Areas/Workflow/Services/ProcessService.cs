@@ -47,6 +47,14 @@ public class ProcessService : IProcessService
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
+    //GetFirstStepIdAsync
+    public async Task<WkfProcessStep?> GetFirstStepAsync(string processId)
+    {
+        return await _context.WkfProcessSteps
+            .Where(s => s.ProcessId == processId && s.IsInitialStep)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<IdentityResult> CreateAsync(WkfProcess process)
     {
         try
@@ -126,6 +134,14 @@ public class ProcessService : IProcessService
             .Include(s => s.Organization)
             .Include(s => s.Privilege)
             .Where(s => s.ProcessId == processId)
+            .ToListAsync();
+    }
+
+    public async Task<ICollection<WkfProcess>> FindChildProcessesAsync(string processId)
+    {
+        return await _context.WkfProcesses
+            .Include(p => p.Module)
+            .Where(p => p.ParentProcessId == processId)
             .ToListAsync();
     }
 

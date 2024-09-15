@@ -50,5 +50,5 @@ public sealed class SystemAttachment
     public IEnumerable<EmailNotificationAttachment>? EmailNotificationAttachments { get; set; }
     public IEnumerable<WkfTaskAttachment>? WkfTaskAttachments { get; set; }
     public IEnumerable<SystemNotificationAttachment>? SystemNotificationAttachments { get; set; }
-    public IEnumerable<PurchaseRequisitionRequestAttachment>? PurchaseRequisitionRequestAttachments { get; set; }
+    public IEnumerable<PurchaseRequisitionAttachment>? PurchaseRequisitionAttachments { get; set; }
 }

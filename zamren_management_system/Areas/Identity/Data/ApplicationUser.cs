@@ -131,11 +131,17 @@ public class ApplicationUser : IdentityUser
     public IEnumerable<SmsNotification>? CreatedSmsNotifications { get; set; }
     public IEnumerable<SmsNotification>? ModifiedSmsNotifications { get; set; }
     public IEnumerable<SmsNotification>? SmsNotifications { get; set; }
-    public IEnumerable<PurchaseRequisitionRequest>? PurchaseRequisitionRequests { get; set; }
-    public IEnumerable<PurchaseRequisitionRequest>? CreatedPurchaseRequisitionRequests { get; set; }
-    public IEnumerable<PurchaseRequisitionRequest>? ModifiedPurchaseRequisitionRequests { get; set; }
-    public IEnumerable<PurchaseRequisitionRequestAttachment>? CreatedPurchaseRequisitionRequestAttachments { get; set; }
-    public IEnumerable<PurchaseRequisitionRequestAttachment>? ModifiedPurchaseRequisitionRequestAttachments { get; set; }
+    public IEnumerable<PurchaseRequisition>? PurchaseRequisitions { get; set; }
+    public IEnumerable<PurchaseRequisition>? CreatedPurchaseRequisitions { get; set; }
+    public IEnumerable<PurchaseRequisition>? ModifiedPurchaseRequisitions { get; set; }
+    public IEnumerable<PurchaseRequisitionAttachment>? CreatedPurchaseRequisitionAttachments { get; set; }
+    public IEnumerable<PurchaseRequisitionAttachment>? ModifiedPurchaseRequisitionAttachments { get; set; }
     public IEnumerable<WkfProcessStepCondition>? CreatedWkfProcessStepConditions { get; set; }
     public IEnumerable<WkfProcessStepCondition>? ModifiedWkfProcessStepConditions { get; set; }
+    public IEnumerable<PurchaseRequisitionGood>? VendorPurchaseRequisitionGoods { get; set; }
+    public IEnumerable<PurchaseRequisitionGood>? CreatedPurchaseRequisitionGoods { get; set; }
+    public IEnumerable<PurchaseRequisitionGood>? ModifiedPurchaseRequisitionGoods { get; set; }
+    public IEnumerable<PurchaseRequisitionService>? VendorPurchaseRequisitionServices { get; set; }
+    public IEnumerable<PurchaseRequisitionService>? CreatedPurchaseRequisitionServices { get; set; }
+    public IEnumerable<PurchaseRequisitionService>? ModifiedPurchaseRequisitionServices { get; set; }
 }

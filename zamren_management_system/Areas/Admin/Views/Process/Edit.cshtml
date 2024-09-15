@@ -10,7 +10,7 @@
             <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a asp-area="Admin" asp-controller="Process" asp-action="Index">Process</a>
+            <a asp-area="Admin" asp-controller="Process" asp-action="Index">Processes</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">Edit</li>
     </ol>
@@ -51,6 +51,17 @@
                         </select>
                         <label for="moduleId">Module</label>
                     </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="isChildProcess" name="isChildProcess" disabled="disabled">
+                        <label class="form-check-label" for="isChildProcess">Is Child Process</label>
+                    </div>
+                    <div class="form-group mb-3" id="parentProcessGroup" style="display: none;">
+                        <label for="parentProcessId" class="control-label">Select Parent Process</label><br>
+                        <select class="form-control" id="parentProcessId" name="parentProcessId">
+                        </select>
+                    </div>
+
                     <input type="hidden" id="id" name="id"/>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
@@ -101,6 +112,7 @@
     
     </script>
     <script src="~/js/workflow/process/get.process.data.js"></script>
+    <script src="~/js/workflow/process/get.parent.processes.js"></script>
     <script src="~/js/workflow/process/get.steps.in.process.dt.js"></script>
     <script src="~/js/workflow/step/delete.step.js"></script>
     <script src="~/js/workflow/process/edit.process.js"></script>

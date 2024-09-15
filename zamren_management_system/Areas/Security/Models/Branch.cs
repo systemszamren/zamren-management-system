@@ -32,5 +32,5 @@ public sealed class Branch
     public Organization Organization { get; set; }
     public IEnumerable<Department>? Departments { get; set; }
     public IEnumerable<WkfProcessStep>? WkfSteps { get; set; }
-    public IEnumerable<PurchaseRequisitionRequest>? PurchaseRequisitionRequests { get; set; }
+    public IEnumerable<PurchaseRequisition>? PurchaseRequisitions { get; set; }
 }

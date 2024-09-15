@@ -12,4 +12,5 @@ public class WkfProcessDto
      public string? Description { get; set; }
      public string? ParentProcessId { get; set; }
      public ModuleDto? Module { get; set; }
+     public string? IsChildProcessString { get; set; }
 }

@@ -29,5 +29,5 @@ public sealed class Organization
     
     public IEnumerable<Branch>? Branches { get; set; }
     public IEnumerable<WkfProcessStep>? WkfSteps { get; set; }
-    public IEnumerable<PurchaseRequisitionRequest>? PurchaseRequisitionRequests { get; set; }
+    public IEnumerable<PurchaseRequisition>? PurchaseRequisitions { get; set; }
 }

@@ -148,11 +148,6 @@ public class StepApiController : ControllerBase
             if (string.IsNullOrEmpty(stepDto.Name))
                 return Ok(new { success = false, message = "Step name is required" });
 
-            //check if step with name already exists
-            var stepExists = await _stepService.FindByNameAsync(stepDto.Name);
-            if (stepExists != null)
-                return Ok(new { success = false, message = "Step with the same name already exists: " + stepDto.Name });
-
             if (string.IsNullOrEmpty(stepDto.Description))
                 return Ok(new { success = false, message = "Step description is required" });
 
@@ -168,6 +163,11 @@ public class StepApiController : ControllerBase
             stepDto.Process.Id = _cypherService.Decrypt(stepDto.Process.Id);
             if (await _processService.FindByIdAsync(stepDto.Process.Id) == null)
                 return Ok(new { success = false, message = "Process not found" });
+            
+            //check if step with name already exists
+            var stepExists = await _stepService.GetByNameInProcessAsync(stepDto.Name, stepDto.Process.Id);
+            if (stepExists != null)
+                return Ok(new { success = false, message = "Step with the same name already exists: " + stepDto.Name });
 
             //PrivilegeId
             if (!string.IsNullOrEmpty(stepDto.Privilege.Id))
@@ -333,7 +333,7 @@ public class StepApiController : ControllerBase
                     {
                         success = false,
                         message =
-                            "This task cannot be assigned. Kindly select at least 'Assignment Parameter' in order for the system to assign the task correctly"
+                            "This task cannot be assigned to any user. Kindly select at least 'Assignment Parameter' in order for the system to assign the task correctly"
                     });
             }
 
@@ -463,6 +463,12 @@ public class StepApiController : ControllerBase
 
             if (string.IsNullOrEmpty(stepDto.Id))
                 return Ok(new { success = false, message = "An error occurred while processing the request" });
+            
+            // Find the existing step
+            stepDto.Id = _cypherService.Decrypt(stepDto.Id);
+            var currentStep = await _stepService.FindByIdAsync(stepDto.Id);
+            if (currentStep == null)
+                return Ok(new { success = false, message = "An error occurred while processing the request" });
 
             //DepartmentHeadApprovalString
             if (string.IsNullOrEmpty(stepDto.IsDepartmentHeadApprovedString))
@@ -500,7 +506,7 @@ public class StepApiController : ControllerBase
                 return Ok(new { success = false, message = "Step name is required" });
 
             //check if step with name already exists
-            var stepExists = await _stepService.FindByNameAsync(stepDto.Name);
+            var stepExists = await _stepService.GetByNameInProcessExceptAsync(stepDto.Name, stepDto.Process.Id, stepDto.Id);
             if (stepExists != null && stepExists.Id != stepDto.Id)
                 return Ok(new { success = false, message = "Step with the same name already exists: " + stepDto.Name });
 
@@ -708,7 +714,7 @@ public class StepApiController : ControllerBase
                     {
                         success = false,
                         message =
-                            "This task cannot be assigned. Kindly select at least 'Assignment Parameter' in order for the system to assign the task correctly"
+                            "This task cannot be assigned to any user. Kindly select at least 'Assignment Parameter' in order for the system to assign the task correctly"
                     });
             }
 
@@ -738,36 +744,30 @@ public class StepApiController : ControllerBase
                 }
             }
 
-            // Find the existing step
-            stepDto.Id = _cypherService.Decrypt(stepDto.Id);
-            var existingStep = await _stepService.FindByIdAsync(stepDto.Id);
-            if (existingStep == null)
-                return Ok(new { success = false, message = "An error occurred while processing the request" });
-
             // Update the existing step
-            existingStep.Name = stepDto.Name;
-            existingStep.Description = stepDto.Description;
-            existingStep.PrivilegeId = stepDto.Privilege.Id;
-            existingStep.ProcessId = stepDto.Process.Id;
-            existingStep.IsInitialStep = (bool)stepDto.IsInitialStep;
-            existingStep.IsFinalStep = (bool)stepDto.IsFinalStep;
-            existingStep.IsAutoApproved = (bool)stepDto.IsAutoApproved;
-            existingStep.PreviousStepId = stepDto.PreviousStepId;
-            existingStep.NextStepId = stepDto.NextStepId;
+            currentStep.Name = stepDto.Name;
+            currentStep.Description = stepDto.Description;
+            currentStep.PrivilegeId = stepDto.Privilege.Id;
+            currentStep.ProcessId = stepDto.Process.Id;
+            currentStep.IsInitialStep = (bool)stepDto.IsInitialStep;
+            currentStep.IsFinalStep = (bool)stepDto.IsFinalStep;
+            currentStep.IsAutoApproved = (bool)stepDto.IsAutoApproved;
+            currentStep.PreviousStepId = stepDto.PreviousStepId;
+            currentStep.NextStepId = stepDto.NextStepId;
             // existingStep.NextProcessId = stepDto.NextProcessId;
             // existingStep.PrevProcessId = stepDto.PrevProcessId;
-            existingStep.RequestMap = stepDto.RequestMap;
-            existingStep.SlaHours = stepDto.SlaHours;
-            existingStep.RoleId = stepDto.Role.Id;
-            existingStep.ActioningUserId = stepDto.ActioningUser.Id;
-            existingStep.OfficeId = stepDto.Office.Id;
-            existingStep.DepartmentId = stepDto.Department.Id;
-            existingStep.BranchId = stepDto.Branch.Id;
-            existingStep.OrganizationId = stepDto.Organization.Id;
-            existingStep.ModifiedByUserId = _userManager.GetUserId(User);
-            existingStep.ModifiedDate = DateTimeOffset.UtcNow;
+            currentStep.RequestMap = stepDto.RequestMap;
+            currentStep.SlaHours = stepDto.SlaHours;
+            currentStep.RoleId = stepDto.Role.Id;
+            currentStep.ActioningUserId = stepDto.ActioningUser.Id;
+            currentStep.OfficeId = stepDto.Office.Id;
+            currentStep.DepartmentId = stepDto.Department.Id;
+            currentStep.BranchId = stepDto.Branch.Id;
+            currentStep.OrganizationId = stepDto.Organization.Id;
+            currentStep.ModifiedByUserId = _userManager.GetUserId(User);
+            currentStep.ModifiedDate = DateTimeOffset.UtcNow;
 
-            var result = await _stepService.UpdateAsync(existingStep);
+            var result = await _stepService.UpdateAsync(currentStep);
 
             return result.Succeeded
                 ? Ok(new { success = true, message = "Step updated successfully" })

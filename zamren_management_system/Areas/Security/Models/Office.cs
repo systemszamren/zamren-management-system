@@ -31,5 +31,5 @@ public sealed class Office
     public Department Department { get; set; }
     public IEnumerable<UserOffice>? UserOffices { get; set; }
     public IEnumerable<WkfProcessStep>? WkfSteps { get; set; }
-    public IEnumerable<PurchaseRequisitionRequest>? PurchaseRequisitionRequests { get; set; }
+    public IEnumerable<PurchaseRequisition>? PurchaseRequisitions { get; set; }
 }

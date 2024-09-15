@@ -44,8 +44,10 @@ public class AuthContext : IdentityDbContext<ApplicationUser, ApplicationRole, s
     public DbSet<WkfTaskLog> WkfTaskLogs { get; set; }
     public DbSet<WkfSequence> WkfSequences { get; set; }
 
-    public DbSet<PurchaseRequisitionRequest> PurchaseRequisitionRequests { get; set; }
-    public DbSet<PurchaseRequisitionRequestAttachment> PurchaseRequisitionRequestAttachments { get; set; }
+    public DbSet<PurchaseRequisition> PurchaseRequisitions { get; set; }
+    public DbSet<PurchaseRequisitionGood> PurchaseRequisitionGoods { get; set; }
+    public DbSet<PurchaseRequisitionService> PurchaseRequisitionServices { get; set; }
+    public DbSet<PurchaseRequisitionAttachment> PurchaseRequisitionAttachments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -738,68 +740,112 @@ public class AuthContext : IdentityDbContext<ApplicationUser, ApplicationRole, s
             .WithMany(x => x.ModifiedWkfTaskAttachments)
             .HasForeignKey(x => x.ModifiedByUserId);
 
-        //PurchaseRequisitionRequest
-        builder.Entity<PurchaseRequisitionRequest>().ToTable("proc_purchase_requisition_request");
-        builder.Entity<PurchaseRequisitionRequest>()
+        //PurchaseRequisition
+        builder.Entity<PurchaseRequisition>().ToTable("proc_purchase_requisition");
+        builder.Entity<PurchaseRequisition>()
             .HasOne(x => x.RequestingOfficerUser)
-            .WithMany(x => x.PurchaseRequisitionRequests)
+            .WithMany(x => x.PurchaseRequisitions)
             .HasForeignKey(x => x.RequestingOfficerUserId);
 
-        builder.Entity<PurchaseRequisitionRequest>()
+        builder.Entity<PurchaseRequisition>()
             .HasOne(x => x.Organization)
-            .WithMany(x => x.PurchaseRequisitionRequests)
+            .WithMany(x => x.PurchaseRequisitions)
             .HasForeignKey(x => x.OrganizationId);
 
-        builder.Entity<PurchaseRequisitionRequest>()
+        builder.Entity<PurchaseRequisition>()
             .HasOne(x => x.Branch)
-            .WithMany(x => x.PurchaseRequisitionRequests)
+            .WithMany(x => x.PurchaseRequisitions)
             .HasForeignKey(x => x.BranchId);
 
-        builder.Entity<PurchaseRequisitionRequest>()
+        builder.Entity<PurchaseRequisition>()
             .HasOne(x => x.Department)
-            .WithMany(x => x.PurchaseRequisitionRequests)
+            .WithMany(x => x.PurchaseRequisitions)
             .HasForeignKey(x => x.DepartmentId);
 
-        builder.Entity<PurchaseRequisitionRequest>()
+        builder.Entity<PurchaseRequisition>()
             .HasOne(x => x.Office)
-            .WithMany(x => x.PurchaseRequisitionRequests)
+            .WithMany(x => x.PurchaseRequisitions)
             .HasForeignKey(x => x.OfficeId);
 
-        builder.Entity<PurchaseRequisitionRequest>()
+        builder.Entity<PurchaseRequisition>()
             .HasOne(x => x.CreatedBy)
-            .WithMany(x => x.CreatedPurchaseRequisitionRequests)
+            .WithMany(x => x.CreatedPurchaseRequisitions)
             .HasForeignKey(x => x.CreatedByUserId);
 
-        builder.Entity<PurchaseRequisitionRequest>()
+        builder.Entity<PurchaseRequisition>()
             .HasOne(x => x.ModifiedBy)
-            .WithMany(x => x.ModifiedPurchaseRequisitionRequests)
+            .WithMany(x => x.ModifiedPurchaseRequisitions)
             .HasForeignKey(x => x.ModifiedByUserId);
 
-        builder.Entity<PurchaseRequisitionRequest>()
+        builder.Entity<PurchaseRequisition>()
             .HasIndex(x => x.Reference)
             .IsUnique();
+        
+        //PurchaseRequisitionGood
+        builder.Entity<PurchaseRequisitionGood>().ToTable("proc_purchase_requisition_good");
+        
+        builder.Entity<PurchaseRequisitionGood>()
+            .HasOne(x => x.PurchaseRequisition)
+            .WithMany(x => x.PurchaseRequisitionGoods)
+            .HasForeignKey(x => x.PurchaseRequisitionId);
+        
+        builder.Entity<PurchaseRequisitionGood>()
+            .HasOne(x => x.VendorUser)
+            .WithMany(x => x.VendorPurchaseRequisitionGoods)
+            .HasForeignKey(x => x.VendorUserId);
+        
+        builder.Entity<PurchaseRequisitionGood>()
+            .HasOne(x => x.CreatedBy)
+            .WithMany(x => x.CreatedPurchaseRequisitionGoods)
+            .HasForeignKey(x => x.CreatedByUserId);
+        
+        builder.Entity<PurchaseRequisitionGood>()
+            .HasOne(x => x.ModifiedBy)
+            .WithMany(x => x.ModifiedPurchaseRequisitionGoods)
+            .HasForeignKey(x => x.ModifiedByUserId);
+        
+        //PurchaseRequisitionService
+        builder.Entity<PurchaseRequisitionService>().ToTable("proc_purchase_requisition_service");
+        builder.Entity<PurchaseRequisitionService>()
+            .HasOne(x => x.PurchaseRequisition)
+            .WithMany(x => x.PurchaseRequisitionServices)
+            .HasForeignKey(x => x.PurchaseRequisitionId);
+        
+        builder.Entity<PurchaseRequisitionService>()
+            .HasOne(x => x.VendorUser)
+            .WithMany(x => x.VendorPurchaseRequisitionServices)
+            .HasForeignKey(x => x.VendorUserId);
+        
+        builder.Entity<PurchaseRequisitionService>()
+            .HasOne(x => x.CreatedBy)
+            .WithMany(x => x.CreatedPurchaseRequisitionServices)
+            .HasForeignKey(x => x.CreatedByUserId);
+        
+        builder.Entity<PurchaseRequisitionService>()
+            .HasOne(x => x.ModifiedBy)
+            .WithMany(x => x.ModifiedPurchaseRequisitionServices)
+            .HasForeignKey(x => x.ModifiedByUserId);
 
-        //PurchaseRequisitionRequestAttachment
-        builder.Entity<PurchaseRequisitionRequestAttachment>().ToTable("proc_purchase_requisition_request_attachment");
+        //PurchaseRequisitionAttachment
+        builder.Entity<PurchaseRequisitionAttachment>().ToTable("proc_purchase_requisition_attachment");
+        builder.Entity<PurchaseRequisitionAttachment>()
+            .HasOne(x => x.PurchaseRequisition)
+            .WithMany(x => x.PurchaseRequisitionAttachments)
+            .HasForeignKey(x => x.PurchaseRequisitionId);
 
-        builder.Entity<PurchaseRequisitionRequestAttachment>()
-            .HasOne(x => x.PurchaseRequisitionRequest)
-            .WithMany(x => x.PurchaseRequisitionRequestAttachments)
-            .HasForeignKey(x => x.PurchaseRequisitionRequestId);
-
-        builder.Entity<PurchaseRequisitionRequestAttachment>()
+        builder.Entity<PurchaseRequisitionAttachment>()
             .HasOne(x => x.SystemAttachment)
-            .WithMany(x => x.PurchaseRequisitionRequestAttachments)
+            .WithMany(x => x.PurchaseRequisitionAttachments)
             .HasForeignKey(x => x.AttachmentId);
 
-        builder.Entity<PurchaseRequisitionRequestAttachment>()
+        builder.Entity<PurchaseRequisitionAttachment>()
             .HasOne(x => x.CreatedBy)
-            .WithMany(x => x.CreatedPurchaseRequisitionRequestAttachments)
+            .WithMany(x => x.CreatedPurchaseRequisitionAttachments)
             .HasForeignKey(x => x.CreatedByUserId);
 
-        builder.Entity<PurchaseRequisitionRequestAttachment>()
+        builder.Entity<PurchaseRequisitionAttachment>()
             .HasOne(x => x.ModifiedBy)
-            .WithMany(x => x.ModifiedPurchaseRequisitionRequestAttachments)
+            .WithMany(x => x.ModifiedPurchaseRequisitionAttachments)
             .HasForeignKey(x => x.ModifiedByUserId);
     }
 }

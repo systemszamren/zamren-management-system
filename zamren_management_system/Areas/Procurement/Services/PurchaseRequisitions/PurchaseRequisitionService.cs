@@ -1,27 +1,26 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using zamren_management_system.Areas.Identity.Data;
-using zamren_management_system.Areas.Procurement.Interfaces.PurchaseRequisition;
-using zamren_management_system.Areas.Procurement.Models;
+using zamren_management_system.Areas.Procurement.Interfaces.PurchaseRequisitions;
 
-namespace zamren_management_system.Areas.Procurement.Services.PurchaseRequisition;
+namespace zamren_management_system.Areas.Procurement.Services.PurchaseRequisitions;
 
-public class PurchaseRequisitionRequestService : IPurchaseRequisitionRequestService
+public class PurchaseRequisitionService : IPurchaseRequisitionService
 {
     private readonly AuthContext _context;
-    private readonly ILogger<PurchaseRequisitionRequestService> _logger;
+    private readonly ILogger<PurchaseRequisitionService> _logger;
 
-    public PurchaseRequisitionRequestService(AuthContext context, ILogger<PurchaseRequisitionRequestService> logger)
+    public PurchaseRequisitionService(AuthContext context, ILogger<PurchaseRequisitionService> logger)
     {
         _context = context;
         _logger = logger;
     }
 
-    public async Task<IdentityResult> CreateAsync(PurchaseRequisitionRequest purchaseRequisitionRequest)
+    public async Task<IdentityResult> CreateAsync(Models.PurchaseRequisition purchaseRequisition)
     {
         try
         {
-            await _context.PurchaseRequisitionRequests.AddAsync(purchaseRequisitionRequest);
+            await _context.PurchaseRequisitions.AddAsync(purchaseRequisition);
             await _context.SaveChangesAsync();
             return IdentityResult.Success;
         }
@@ -36,11 +35,11 @@ public class PurchaseRequisitionRequestService : IPurchaseRequisitionRequestServ
         }
     }
 
-    public async Task<IdentityResult> UpdateAsync(PurchaseRequisitionRequest purchaseRequisitionRequest)
+    public async Task<IdentityResult> UpdateAsync(Models.PurchaseRequisition purchaseRequisition)
     {
         try
         {
-            _context.PurchaseRequisitionRequests.Update(purchaseRequisitionRequest);
+            _context.PurchaseRequisitions.Update(purchaseRequisition);
             await _context.SaveChangesAsync();
             return IdentityResult.Success;
         }
@@ -55,11 +54,11 @@ public class PurchaseRequisitionRequestService : IPurchaseRequisitionRequestServ
         }
     }
 
-    public async Task<IdentityResult> DeleteAsync(PurchaseRequisitionRequest purchaseRequisitionRequest)
+    public async Task<IdentityResult> DeleteAsync(Models.PurchaseRequisition purchaseRequisition)
     {
         try
         {
-            _context.PurchaseRequisitionRequests.Remove(purchaseRequisitionRequest);
+            _context.PurchaseRequisitions.Remove(purchaseRequisition);
             await _context.SaveChangesAsync();
             return IdentityResult.Success;
         }
@@ -74,9 +73,9 @@ public class PurchaseRequisitionRequestService : IPurchaseRequisitionRequestServ
         }
     }
 
-    public async Task<PurchaseRequisitionRequest?> FindByIdAsync(string purchaseRequisitionId)
+    public async Task<Models.PurchaseRequisition?> FindByIdAsync(string purchaseRequisitionId)
     {
-        return await _context.PurchaseRequisitionRequests
+        return await _context.PurchaseRequisitions
             .Include(pr => pr.RequestingOfficerUser)
             .Include(pr => pr.Organization)
             .Include(pr => pr.Branch)
@@ -87,9 +86,9 @@ public class PurchaseRequisitionRequestService : IPurchaseRequisitionRequestServ
     }
 
     //FindAllAsync
-    public async Task<List<PurchaseRequisitionRequest>> FindAllAsync()
+    public async Task<List<Models.PurchaseRequisition>> FindAllAsync()
     {
-        return await _context.PurchaseRequisitionRequests
+        return await _context.PurchaseRequisitions
             .Include(pr => pr.RequestingOfficerUser)
             .Include(pr => pr.Organization)
             .Include(pr => pr.Branch)
@@ -100,9 +99,9 @@ public class PurchaseRequisitionRequestService : IPurchaseRequisitionRequestServ
     }
 
     //FindByDepartmentAsync
-    public async Task<ICollection<PurchaseRequisitionRequest>> FindByDepartmentAsync(string departmentId)
+    public async Task<ICollection<Models.PurchaseRequisition>> FindByDepartmentAsync(string departmentId)
     {
-        return await _context.PurchaseRequisitionRequests
+        return await _context.PurchaseRequisitions
             .Include(pr => pr.RequestingOfficerUser)
             .Include(pr => pr.Organization)
             .Include(pr => pr.Branch)
@@ -114,10 +113,10 @@ public class PurchaseRequisitionRequestService : IPurchaseRequisitionRequestServ
     }
 
     //FindByRequestingOfficerAsync
-    public async Task<ICollection<PurchaseRequisitionRequest>> FindByRequestingOfficerAsync(
+    public async Task<ICollection<Models.PurchaseRequisition>> FindByRequestingOfficerAsync(
         string requestingOfficerUserId)
     {
-        return await _context.PurchaseRequisitionRequests
+        return await _context.PurchaseRequisitions
             .Include(pr => pr.RequestingOfficerUser)
             .Include(pr => pr.Organization)
             .Include(pr => pr.Branch)
@@ -129,9 +128,9 @@ public class PurchaseRequisitionRequestService : IPurchaseRequisitionRequestServ
     }
 
     //FindByReferenceAsync
-    public async Task<PurchaseRequisitionRequest?> FindByReferenceAsync(string reference)
+    public async Task<Models.PurchaseRequisition?> FindByReferenceAsync(string reference)
     {
-        return await _context.PurchaseRequisitionRequests
+        return await _context.PurchaseRequisitions
             .Include(pr => pr.RequestingOfficerUser)
             .Include(pr => pr.Organization)
             .Include(pr => pr.Branch)

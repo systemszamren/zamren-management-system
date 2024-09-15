@@ -48,6 +48,9 @@ public class ProcessApiController : ControllerBase
         {
             var searchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
             var processes = await _processService.FindAllAsync();
+            
+            //sort the processes by if has ParentProcessId, then by Name
+            processes = processes.OrderBy(p => p.ParentProcessId).ThenBy(p => p.Name).ToList();
 
             return _datatableService.GetEntitiesForDatatable(
                 Request.Form,
@@ -94,6 +97,8 @@ public class ProcessApiController : ControllerBase
             if (process == null)
                 return Ok(new { success = false, message = "Process not found" });
 
+            var processes = await _processService.GetParentProcessesInModuleAsync(process.ModuleId);
+
             //get list of modules
             var modules = await _moduleService.FindAllAsync();
 
@@ -110,9 +115,10 @@ public class ProcessApiController : ControllerBase
                 }).ToList(),
                 process = new WkfProcessDto
                 {
-                    Id = _cypherService.Encrypt(process.Id),
+                    Id = process.Id,
                     Name = process.Name,
                     Description = process.Description,
+                    ParentProcessId = process.ParentProcessId,
                     Module = new ModuleDto
                     {
                         Id = _cypherService.Encrypt(process.ModuleId),
@@ -121,7 +127,13 @@ public class ProcessApiController : ControllerBase
                         Code = process.Module.Code,
                         Description = process.Module.Description
                     }
-                }
+                },
+                parentProcesses = processes.Select(p => new WkfProcessDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description
+                }).ToList()
             });
         }
         catch (Exception ex)
@@ -141,6 +153,7 @@ public class ProcessApiController : ControllerBase
             {
                 Name = Request.Form["name"].FirstOrDefault(),
                 Description = Request.Form["description"].FirstOrDefault(),
+                IsChildProcessString = Request.Form["isChildProcess"].FirstOrDefault()!,
                 ParentProcessId = Request.Form["parentProcessId"].FirstOrDefault()!,
                 Module = new ModuleDto
                 {
@@ -156,15 +169,42 @@ public class ProcessApiController : ControllerBase
 
             if (string.IsNullOrEmpty(processDto.Module.Id))
                 return Ok(new { success = false, message = "Module is required" });
+            
+            if (!string.IsNullOrEmpty(processDto.IsChildProcessString))
+            {
+                if (processDto.IsChildProcessString == "on")
+                {
+                    if (!string.IsNullOrEmpty(processDto.ParentProcessId))
+                    {
+                        processDto.ParentProcessId = _cypherService.Decrypt(processDto.ParentProcessId);
+                        if (await _processService.FindByIdAsync(processDto.ParentProcessId) == null)
+                        {
+                            return Ok(new { success = false, message = "Parent process not found" });
+                        }
+                    }
+                    else
+                    {
+                        return Ok(new { success = false, message = "Kindly select a parent process" });
+                    }
+                }
+                else
+                {
+                    processDto.ParentProcessId = null;
+                }
+            }
+            else
+            {
+                processDto.ParentProcessId = null;
+            }
 
-            if (!string.IsNullOrEmpty(processDto.ParentProcessId))
+            /*if (!string.IsNullOrEmpty(processDto.ParentProcessId))
             {
                 processDto.ParentProcessId = _cypherService.Decrypt(processDto.ParentProcessId);
                 if (await _processService.FindByIdAsync(processDto.ParentProcessId) == null)
                 {
                     return Ok(new { success = false, message = "Parent process not found" });
                 }
-            }
+            }*/
 
             processDto.Name = _util.TrimAndRemoveExtraSpacesAndToUpperCase(processDto.Name);
 
@@ -210,6 +250,7 @@ public class ProcessApiController : ControllerBase
                 Id = Request.Form["id"].FirstOrDefault(),
                 Name = Request.Form["name"].FirstOrDefault(),
                 ParentProcessId = Request.Form["parentProcessId"].FirstOrDefault()!,
+                IsChildProcessString = Request.Form["isChildProcess"].FirstOrDefault()!,
                 Description = Request.Form["description"].FirstOrDefault(),
                 Module = new ModuleDto
                 {
@@ -226,13 +267,31 @@ public class ProcessApiController : ControllerBase
             if (string.IsNullOrEmpty(processDto.Id))
                 return Ok(new { success = false, message = "An error occurred while processing the request" });
 
-            if (!string.IsNullOrEmpty(processDto.ParentProcessId))
+            if (!string.IsNullOrEmpty(processDto.IsChildProcessString))
             {
-                processDto.ParentProcessId = _cypherService.Decrypt(processDto.ParentProcessId);
-                if (await _processService.FindByIdAsync(processDto.ParentProcessId) == null)
+                if (processDto.IsChildProcessString == "on")
                 {
-                    return Ok(new { success = false, message = "Parent process not found" });
+                    if (!string.IsNullOrEmpty(processDto.ParentProcessId))
+                    {
+                        processDto.ParentProcessId = _cypherService.Decrypt(processDto.ParentProcessId);
+                        if (await _processService.FindByIdAsync(processDto.ParentProcessId) == null)
+                        {
+                            return Ok(new { success = false, message = "Parent process not found" });
+                        }
+                    }
+                    else
+                    {
+                        return Ok(new { success = false, message = "Kindly select a parent process" });
+                    }
                 }
+                else
+                {
+                    processDto.ParentProcessId = null;
+                }
+            }
+            else
+            {
+                processDto.ParentProcessId = null;
             }
 
             processDto.Name = _util.TrimAndRemoveExtraSpacesAndToUpperCase(processDto.Name);
@@ -292,6 +351,15 @@ public class ProcessApiController : ControllerBase
                 {
                     success = false,
                     message = "Cannot delete process. It has " + steps.Count + " step(s)"
+                });
+
+            //check if the process has child processes
+            var childProcesses = await _processService.FindChildProcessesAsync(id);
+            if (childProcesses.Any())
+                return Ok(new
+                {
+                    success = false,
+                    message = "Cannot delete process. It has " + childProcesses.Count + " child process(es)"
                 });
 
             //delete process

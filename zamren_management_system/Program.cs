@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using zamren_management_system.Areas.Procurement.Interfaces.PurchaseRequisitions;
+using zamren_management_system.Areas.Procurement.Services.PurchaseRequisitions;
 using Privilege = zamren_management_system.Areas.Security.Models.Privilege;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -104,8 +106,8 @@ builder.Services.Configure<SmsOptions>(configuration); //2fa sms not working, tr
 builder.Services.AddTransient<ISmsSender, SmsSender>();
 builder.Services.AddTransient<ISmsService, SmsService>();
 builder.Services
-    .AddTransient<IPurchaseRequisitionRequestAttachmentService, PurchaseRequisitionRequestAttachmentService>();
-builder.Services.AddTransient<IPurchaseRequisitionRequestService, PurchaseRequisitionRequestService>();
+    .AddTransient<IPurchaseRequisitionAttachmentService, PurchaseRequisitionAttachmentService>();
+builder.Services.AddTransient<IPurchaseRequisitionGoodService, PurchaseRequisitionGoodService>();
 
 // Add controllers with Razor runtime compilation
 builder.Services.AddControllersWithViews()

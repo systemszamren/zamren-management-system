@@ -6,24 +6,24 @@ using zamren_management_system.Areas.Procurement.Models;
 
 namespace zamren_management_system.Areas.Procurement.Services.PurchaseRequisition;
 
-public class PurchaseRequisitionRequestAttachmentService : IPurchaseRequisitionRequestAttachmentService
+public class PurchaseRequisitionAttachmentService : IPurchaseRequisitionAttachmentService
 {
     private readonly AuthContext _context;
-    private readonly ILogger<PurchaseRequisitionRequestAttachmentService> _logger;
+    private readonly ILogger<PurchaseRequisitionAttachmentService> _logger;
 
-    public PurchaseRequisitionRequestAttachmentService(AuthContext context,
-        ILogger<PurchaseRequisitionRequestAttachmentService> logger)
+    public PurchaseRequisitionAttachmentService(AuthContext context,
+        ILogger<PurchaseRequisitionAttachmentService> logger)
     {
         _context = context;
         _logger = logger;
     }
 
     public async Task<IdentityResult> CreateAsync(
-        PurchaseRequisitionRequestAttachment purchaseRequisitionRequestAttachment)
+        PurchaseRequisitionAttachment purchaseRequisitionAttachment)
     {
         try
         {
-            await _context.PurchaseRequisitionRequestAttachments.AddAsync(purchaseRequisitionRequestAttachment);
+            await _context.PurchaseRequisitionAttachments.AddAsync(purchaseRequisitionAttachment);
             await _context.SaveChangesAsync();
             return IdentityResult.Success;
         }
@@ -39,11 +39,11 @@ public class PurchaseRequisitionRequestAttachmentService : IPurchaseRequisitionR
     }
 
     public async Task<IdentityResult> UpdateAsync(
-        PurchaseRequisitionRequestAttachment purchaseRequisitionRequestAttachment)
+        PurchaseRequisitionAttachment purchaseRequisitionAttachment)
     {
         try
         {
-            _context.PurchaseRequisitionRequestAttachments.Update(purchaseRequisitionRequestAttachment);
+            _context.PurchaseRequisitionAttachments.Update(purchaseRequisitionAttachment);
             await _context.SaveChangesAsync();
             return IdentityResult.Success;
         }
@@ -59,11 +59,11 @@ public class PurchaseRequisitionRequestAttachmentService : IPurchaseRequisitionR
     }
 
     public async Task<IdentityResult> DeleteAsync(
-        PurchaseRequisitionRequestAttachment purchaseRequisitionRequestAttachment)
+        PurchaseRequisitionAttachment purchaseRequisitionAttachment)
     {
         try
         {
-            _context.PurchaseRequisitionRequestAttachments.Remove(purchaseRequisitionRequestAttachment);
+            _context.PurchaseRequisitionAttachments.Remove(purchaseRequisitionAttachment);
             await _context.SaveChangesAsync();
             return IdentityResult.Success;
         }
@@ -78,23 +78,23 @@ public class PurchaseRequisitionRequestAttachmentService : IPurchaseRequisitionR
         }
     }
 
-    public async Task<PurchaseRequisitionRequestAttachment?> FindByIdAsync(
-        string purchaseRequisitionRequestAttachmentId)
+    public async Task<PurchaseRequisitionAttachment?> FindByIdAsync(
+        string purchaseRequisitionAttachmentId)
     {
-        return await _context.PurchaseRequisitionRequestAttachments
-            .FirstOrDefaultAsync(pra => pra.Id == purchaseRequisitionRequestAttachmentId);
+        return await _context.PurchaseRequisitionAttachments
+            .FirstOrDefaultAsync(pra => pra.Id == purchaseRequisitionAttachmentId);
     }
 
-    public async Task<List<PurchaseRequisitionRequestAttachment>> FindAllAsync()
+    public async Task<List<PurchaseRequisitionAttachment>> FindAllAsync()
     {
-        return await _context.PurchaseRequisitionRequestAttachments.ToListAsync();
+        return await _context.PurchaseRequisitionAttachments.ToListAsync();
     }
 
-    public async Task<ICollection<PurchaseRequisitionRequestAttachment>> FindByPurchaseRequisitionRequestIdAsync(
-        string purchaseRequisitionRequestId)
+    public async Task<ICollection<PurchaseRequisitionAttachment>> FindByPurchaseRequisitionIdAsync(
+        string purchaseRequisitionId)
     {
-        return await _context.PurchaseRequisitionRequestAttachments
-            .Where(pra => pra.PurchaseRequisitionRequestId == purchaseRequisitionRequestId)
+        return await _context.PurchaseRequisitionAttachments
+            .Where(pra => pra.PurchaseRequisitionId == purchaseRequisitionId)
             .Include(pra => pra.SystemAttachment)
             .ToListAsync();
     }
