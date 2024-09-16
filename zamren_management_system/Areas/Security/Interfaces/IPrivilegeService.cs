@@ -114,4 +114,10 @@ public interface IPrivilegeService
     /// <param name="moduleName"></param>
     /// <returns></returns>
     public Task<ICollection<Privilege>> FindByModuleNameAsync(string moduleName);
+
+    /// <summary>
+    ///     Retrieves all module privileges.
+    /// </summary>
+    /// <returns></returns>
+    Task<List<Privilege>> GetAllModulePrivilegeAsync();
 }

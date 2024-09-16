@@ -247,7 +247,7 @@ public class PrivilegeApiController : ControllerBase
         try
         {
             var id = Request.Form["id"].FirstOrDefault() ?? "";
-            
+
             if (string.IsNullOrEmpty(id))
                 return Ok(new { success = false, message = "Privilege id is required" });
 
@@ -293,7 +293,7 @@ public class PrivilegeApiController : ControllerBase
 
             if (string.IsNullOrEmpty(privilegeDto.Name))
                 return Ok(new { success = false, message = "Privilege name is required" });
-            
+
             if (string.IsNullOrEmpty(privilegeDto.Id))
                 return Ok(new { success = false, message = "Privilege id is required" });
 

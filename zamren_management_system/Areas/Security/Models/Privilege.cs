@@ -26,6 +26,9 @@ public sealed class Privilege
 
     public DateTimeOffset? ModifiedDate { get; set; }
     public IEnumerable<RolePrivilege>? RolePrivileges { get; set; }
-    public IEnumerable<ModulePrivilege>? ModulePrivileges { get; set; }
+    // public IEnumerable<ModulePrivilege>? ModulePrivileges { get; set; }
+    
+    public ICollection<ModulePrivilege> ModulePrivileges { get; set; } = new List<ModulePrivilege>();
+
     public IEnumerable<WkfProcessStep>? WkfProcessSteps { get; set; }
 }
