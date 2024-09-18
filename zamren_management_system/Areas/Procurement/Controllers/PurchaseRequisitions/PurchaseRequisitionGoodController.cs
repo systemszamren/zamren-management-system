@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace zamren_management_system.Areas.Procurement.Controllers.PurchaseRequisition;
+namespace zamren_management_system.Areas.Procurement.Controllers.PurchaseRequisitions;
 
 [Authorize(Roles = "EMPLOYEE")]
 // [Route("procurement")]

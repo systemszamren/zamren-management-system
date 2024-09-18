@@ -1,5 +1,4 @@
 using zamren_management_system.Areas.Common.LinqExtensions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using zamren_management_system.Areas.Common.Enums;
 using zamren_management_system.Areas.Common.Interfaces;

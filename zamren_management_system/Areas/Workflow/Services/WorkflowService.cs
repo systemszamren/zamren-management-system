@@ -28,6 +28,8 @@ public class WorkflowService : IWorkflowService
     private readonly IEmailTemplate _emailTemplate;
     private readonly ICypherService _cypherService;
     private readonly ISystemNotificationService _systemNotificationService;
+    private const string BaseWkfUrl = "/Workflow/Tasks/";
+
 
     public WorkflowService(AuthContext context, ILogger<WorkflowService> logger, IStepService stepService,
         IProcessService processService, ITaskService taskService, ITaskLogService taskLogService,
@@ -163,6 +165,7 @@ public class WorkflowService : IWorkflowService
         task.CreatedByUserId = currentUserId;
         task.CreatedDate = currentDateTime;
         task.IsOpen = true;
+        task.IsCompleted = false;
         task.WasSentBack = false;
 
         var response1 = await _taskService.CreateAsync(task);
@@ -202,7 +205,7 @@ public class WorkflowService : IWorkflowService
                                                        task.Reference));
 
         var requestMap = step.RequestMap;
-        var url = "/Workflow/Tasks/" + _cypherService.Encrypt(task.Reference);
+        var url = BaseWkfUrl + _cypherService.Encrypt(task.Reference);
 
         if (!string.IsNullOrEmpty(requestMap))
         {
@@ -273,6 +276,9 @@ public class WorkflowService : IWorkflowService
         if (!task.IsOpen)
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is closed" }));
 
+        if (task.IsCompleted)
+            return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is already completed" }));
+
         if (task.CurrentStep == null)
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Current step not found" }));
 
@@ -306,7 +312,7 @@ public class WorkflowService : IWorkflowService
         }
 
         //approve task
-        if (task.CurrentStep.NextStep == null || task.CurrentStep.IsFinalStep) //if task is at final step, close task
+        if (task.CurrentStep.IsFinalStep) //if task is at final step, close task & mark as completed
         {
             //save task log before closing task
             await SaveTaskLog(currentUserId, task, currentDateTime, action, null);
@@ -315,6 +321,7 @@ public class WorkflowService : IWorkflowService
 
             //close task
             task.IsOpen = false;
+            task.IsCompleted = true;
             task.CurrentStep = null;
             task.PreviousActioningUser = previousActioningUser;
             task.CurrentActioningUser = null;
@@ -329,6 +336,9 @@ public class WorkflowService : IWorkflowService
         }
         else //if task is not at final step, move task to next step
         {
+            if (task.CurrentStep.NextStep == null)
+                return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Next step not found" }));
+
             var nextStep = task.CurrentStep.NextStep;
 
             var actioningUser =
@@ -357,7 +367,7 @@ public class WorkflowService : IWorkflowService
                                                        task.Reference));
 
         var requestMap = task.CurrentStep.RequestMap;
-        var url = "/Workflow/Tasks/" + _cypherService.Encrypt(task.Reference);
+        var url = BaseWkfUrl + _cypherService.Encrypt(task.Reference);
 
         if (!string.IsNullOrEmpty(requestMap))
         {
@@ -427,6 +437,9 @@ public class WorkflowService : IWorkflowService
         if (!task.IsOpen)
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is closed" }));
 
+        if (task.IsCompleted)
+            return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is already completed" }));
+
         if (task.CurrentStep == null)
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Current step not found" }));
 
@@ -485,7 +498,7 @@ public class WorkflowService : IWorkflowService
                                                        "\nReference Number: " + task.Reference));
 
         var requestMap = task.CurrentStep.RequestMap;
-        var url = "/Workflow/Tasks/" + _cypherService.Encrypt(task.Reference);
+        var url = BaseWkfUrl + _cypherService.Encrypt(task.Reference);
 
         if (!string.IsNullOrEmpty(requestMap))
         {
@@ -559,6 +572,9 @@ public class WorkflowService : IWorkflowService
         if (!task.IsOpen)
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is closed" }));
 
+        if (task.IsCompleted)
+            return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is already completed" }));
+
         if (task.CurrentStep == null)
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is closed" }));
 
@@ -592,7 +608,7 @@ public class WorkflowService : IWorkflowService
                 CustomIdentityResult.Failed(new IdentityError { Description = "Failed to update task" }));
 
         var requestMap = task.CurrentStep.RequestMap;
-        var url = "/Workflow/Tasks/" + _cypherService.Encrypt(task.Reference);
+        var url = BaseWkfUrl + _cypherService.Encrypt(task.Reference);
 
         if (!string.IsNullOrEmpty(requestMap))
         {
@@ -698,10 +714,13 @@ public class WorkflowService : IWorkflowService
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task not found" }));
 
         // if (task.CurrentStep == null)
-            // return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is closed" }));
+        // return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is closed" }));
 
         if (!task.IsOpen)
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is already closed" }));
+
+        // if (task.IsCompleted) //YOU CAN CLOSE A TASK THAT IS COMPLETED SO DELETE THIS
+        // return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task is already completed" }));
 
         var currentDateTime = DateTimeOffset.Now;
         const WkfAction action = WkfAction.Close;
@@ -768,6 +787,10 @@ public class WorkflowService : IWorkflowService
         var task = await _taskService.FindByReferenceAsync(reference);
         if (task == null)
             return (task, CustomIdentityResult.Failed(new IdentityError { Description = "Task not found" }));
+
+        if (task.IsCompleted)
+            return (task,
+                CustomIdentityResult.Failed(new IdentityError { Description = "A task that is completed cannot be reopened" }));
 
         if (task.IsOpen)
         {

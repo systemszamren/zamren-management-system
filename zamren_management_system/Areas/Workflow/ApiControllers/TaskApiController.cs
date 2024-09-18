@@ -111,6 +111,7 @@ public class TaskApiController : ControllerBase
                         }
                         : null,
                     IsOpen = task.IsOpen,
+                    IsCompleted = task.IsCompleted
                 }).ToList()
             );
         }
@@ -197,6 +198,7 @@ public class TaskApiController : ControllerBase
                         }
                         : null,
                     IsOpen = task.IsOpen,
+                    IsCompleted = task.IsCompleted,
                     WasSentBack = task.WasSentBack,
                     SentBackAtStep = task.SentBackAtStep != null
                         ? new WkfProcessStepDto
@@ -231,7 +233,7 @@ public class TaskApiController : ControllerBase
 
             if (!task.IsOpen)
                 return Ok(new { success = false, message = "Task is already closed" });
-
+            
             var currentDateTime = DateTimeOffset.Now;
             var currentUserId = _userManager.GetUserId(User);
 
@@ -283,6 +285,9 @@ public class TaskApiController : ControllerBase
 
             if (task.IsOpen)
                 return Ok(new { success = false, message = "Task is already open" });
+            
+            if (task.IsCompleted)
+                return Ok(new { success = false, message = "A completed task cannot be reopened" });
 
             if (task.CurrentStep == null)
                 return Ok(new { success = false, message = "Task has no step" });
@@ -350,6 +355,9 @@ public class TaskApiController : ControllerBase
 
             if (!task.IsOpen)
                 return Ok(new { success = false, message = "Task is closed" });
+            
+            if (task.IsCompleted)
+                return Ok(new { success = false, message = "A completed task cannot be reassigned" });
 
             if (task.CurrentStep == null)
                 return Ok(new { success = false, message = "Task has no step" });
@@ -537,6 +545,7 @@ public class TaskApiController : ControllerBase
                         }
                         : null,
                     IsOpen = task.IsOpen,
+                    IsCompleted = task.IsCompleted
                 }).ToList()
             );
         }

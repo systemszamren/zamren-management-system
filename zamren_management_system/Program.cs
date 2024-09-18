@@ -108,6 +108,8 @@ builder.Services.AddTransient<ISmsService, SmsService>();
 builder.Services
     .AddTransient<IPurchaseRequisitionAttachmentService, PurchaseRequisitionAttachmentService>();
 builder.Services.AddTransient<IPurchaseRequisitionGoodService, PurchaseRequisitionGoodService>();
+builder.Services.AddTransient<IPurchaseRequisitionService, PurchaseRequisitionService>();
+builder.Services.AddTransient<IPurchaseRequisitionServiceService, PurchaseRequisitionServiceService>();
 
 // Add controllers with Razor runtime compilation
 builder.Services.AddControllersWithViews()

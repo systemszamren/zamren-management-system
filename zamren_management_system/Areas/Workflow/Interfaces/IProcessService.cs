@@ -8,7 +8,7 @@ public interface IProcessService
     Task<ICollection<WkfProcess>> FindAllAsync();
     Task<ICollection<WkfProcess>> FindByModuleCode(string moduleCode);
     Task<WkfProcess?> FindByIdAsync(string id);
-    Task<WkfProcessStep?> GetFirstStepAsync(string processId);
+    Task<WkfProcessStep?> GetFirstStepByProcessIdAsync(string processId);
     Task<IdentityResult> CreateAsync(WkfProcess process);
     Task<IdentityResult> UpdateAsync(WkfProcess process);
     Task<IdentityResult> DeleteAsync(WkfProcess process);

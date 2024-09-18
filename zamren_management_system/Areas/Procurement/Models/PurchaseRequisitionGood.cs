@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using zamren_management_system.Areas.Common.Models;
 using zamren_management_system.Areas.Identity.Data;
 
 namespace zamren_management_system.Areas.Procurement.Models;
@@ -10,11 +11,14 @@ public sealed class PurchaseRequisitionGood
     [Required] public string PurchaseRequisitionId { get; set; }
     public PurchaseRequisition PurchaseRequisition { get; set; }
 
-    [Required] [StringLength(255)] public string Description { get; set; }
+    [Required] [StringLength(255)] public string ItemDescription { get; set; }
 
     [Required] public int Quantity { get; set; }
 
-    [Required] public decimal EstimatedCost { get; set; }
+    [Required] public decimal? UnitPrice { get; set; }
+    
+    public string? AttachmentId { get; set; }
+    public SystemAttachment? SystemAttachment { get; set; }
     
     public string? VendorUserId { get; set; }
     public ApplicationUser? VendorUser { get; set; }

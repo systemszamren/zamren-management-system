@@ -23,29 +23,32 @@ namespace zamren_management_system.Areas.Procurement.ApiControllers.PurchaseRequ
 [Authorize(Roles = "EMPLOYEE")]
 [Area("Procurement")]
 [Route("api/procurement/purchase-requisition-good")]
-public class PurchaseRequisitionApiController : ControllerBase
+public class PurchaseRequisitionGoodApiController : ControllerBase
 {
-    private readonly ILogger<PurchaseRequisitionApiController> _logger;
+    private readonly ILogger<PurchaseRequisitionGoodApiController> _logger;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ICypherService _cypherService;
     private readonly IWorkflowService _workflowService;
     private readonly ISystemAttachmentManager _systemAttachmentManager;
     private readonly ISystemAttachmentService _systemAttachmentService;
     private readonly IPurchaseRequisitionService _purchaseRequisitionService;
+    private readonly IPurchaseRequisitionGoodService _purchaseRequisitionGoodService;
     private readonly IProcessService _processService;
+    private readonly ITaskService _taskService;
     private readonly IOfficeService _officeService;
     private readonly IBranchService _branchService;
     private readonly IDepartmentService _departmentService;
     private readonly IOrganizationService _organizationService;
     private readonly IPurchaseRequisitionAttachmentService _purchaseRequisitionAttachmentService;
 
-    public PurchaseRequisitionApiController(ILogger<PurchaseRequisitionApiController> logger,
+    public PurchaseRequisitionGoodApiController(ILogger<PurchaseRequisitionGoodApiController> logger,
         UserManager<ApplicationUser> userManager, ICypherService cypherService,
         ISystemAttachmentService systemAttachmentService, ISystemAttachmentManager systemAttachmentManager,
         IWorkflowService workflowService, IPurchaseRequisitionService purchaseRequisitionService,
         IOfficeService officeService, IBranchService branchService, IDepartmentService departmentService,
         IOrganizationService organizationService, IProcessService processService,
-        IPurchaseRequisitionAttachmentService purchaseRequisitionAttachmentService)
+        IPurchaseRequisitionAttachmentService purchaseRequisitionAttachmentService,
+        IPurchaseRequisitionGoodService purchaseRequisitionGoodService, ITaskService taskService)
     {
         _logger = logger;
         _userManager = userManager;
@@ -60,6 +63,8 @@ public class PurchaseRequisitionApiController : ControllerBase
         _organizationService = organizationService;
         _processService = processService;
         _purchaseRequisitionAttachmentService = purchaseRequisitionAttachmentService;
+        _purchaseRequisitionGoodService = purchaseRequisitionGoodService;
+        _taskService = taskService;
     }
 
     [HttpPost("get-purchase-requisition-data")]
@@ -72,11 +77,89 @@ public class PurchaseRequisitionApiController : ControllerBase
             var reference = Request.Form["reference"].FirstOrDefault() ?? "";
 
             PurchaseRequisitionDto? purchaseRequisitionDto = null;
+            WkfTaskDto? taskDto = null;
 
             // Step 2: Get purchase requisition by reference number if reference number is not empty
             if (!string.IsNullOrEmpty(reference) && !reference.Equals("null"))
             {
                 reference = _cypherService.Decrypt(reference);
+
+                var task = await _taskService.FindByReferenceAsync(reference);
+                if (task != null)
+                {
+                    if (!task.IsOpen)
+                        return Ok(new
+                            { success = false, message = "This task is closed" });
+
+                    if (task.IsCompleted)
+                        return Ok(new
+                            { success = false, message = "This task is already completed" });
+
+                    taskDto = new WkfTaskDto
+                    {
+                        Id = _cypherService.Encrypt(task.Id),
+                        PlainId = task.Id,
+                        Reference = task.Reference,
+                        CurrentProcess = new WkfProcessDto
+                        {
+                            Id = _cypherService.Encrypt(task.CurrentProcess.Id),
+                            Name = task.CurrentProcess.Name,
+                            Description = task.CurrentProcess.Description
+                        },
+                        CurrentProcessStartDate = task.CurrentProcessStartDate,
+                        CurrentProcessEndDate = task.CurrentProcessEndDate,
+                        CurrentStep = task.CurrentStep != null
+                            ? new WkfProcessStepDto
+                            {
+                                Id = _cypherService.Encrypt(task.CurrentStep.Id),
+                                Name = task.CurrentStep.Name,
+                                Description = task.CurrentStep.Description
+                            }
+                            : null,
+                        CurrentStepStartedDate = task.CurrentStepStartedDate,
+                        CurrentStepExpectedEndDate = task.CurrentStepExpectedEndDate,
+                        TaskStartedByUser = new UserDto
+                        {
+                            Id = _cypherService.Encrypt(task.TaskStartedByUser.Id),
+                            FullName = task.TaskStartedByUser.FullName,
+                            FirstName = task.TaskStartedByUser.FirstName,
+                            LastName = task.TaskStartedByUser.LastName,
+                            Email = task.TaskStartedByUser.Email
+                        },
+                        CurrentActioningUser = task.CurrentActioningUser != null
+                            ? new UserDto
+                            {
+                                Id = _cypherService.Encrypt(task.CurrentActioningUser.Id),
+                                FullName = task.CurrentActioningUser.FullName,
+                                FirstName = task.CurrentActioningUser.FirstName,
+                                LastName = task.CurrentActioningUser.LastName,
+                                Email = task.CurrentActioningUser.Email
+                            }
+                            : null,
+                        PreviousActioningUser = task.PreviousActioningUser != null
+                            ? new UserDto
+                            {
+                                Id = _cypherService.Encrypt(task.PreviousActioningUser.Id),
+                                FullName = task.PreviousActioningUser.FullName,
+                                FirstName = task.PreviousActioningUser.FirstName,
+                                LastName = task.PreviousActioningUser.LastName,
+                                Email = task.PreviousActioningUser.Email
+                            }
+                            : null,
+                        IsOpen = task.IsOpen,
+                        IsCompleted = task.IsCompleted,
+                        WasSentBack = task.WasSentBack,
+                        SentBackAtStep = task.SentBackAtStep != null
+                            ? new WkfProcessStepDto
+                            {
+                                Id = _cypherService.Encrypt(task.SentBackAtStep.Id),
+                                Name = task.SentBackAtStep.Name,
+                                Description = task.SentBackAtStep.Description
+                            }
+                            : null
+                    };
+                }
+
                 var purchaseRequisition = await _purchaseRequisitionService.FindByReferenceAsync(reference);
                 if (purchaseRequisition == null)
                     return Ok(new { success = false, message = "Purchase requisition not found" });
@@ -89,11 +172,46 @@ public class PurchaseRequisitionApiController : ControllerBase
                     BranchId = purchaseRequisition.BranchId,
                     DepartmentId = purchaseRequisition.DepartmentId,
                     OfficeId = purchaseRequisition.OfficeId,
-                    // ItemDescription = purchaseRequisition.ItemDescription,
-                    // Quantity = purchaseRequisition.Quantity,
-                    // EstimatedCost = purchaseRequisition.EstimatedCost,
-                    Justification = purchaseRequisition.Justification
+                    Justification = purchaseRequisition.Justification,
                 };
+
+                //get purchaseRequisitionGoods
+                var purchaseRequisitionGoods =
+                    await _purchaseRequisitionGoodService.FindByPurchaseRequisitionIdAsync(purchaseRequisition.Id);
+
+                //populate goods
+                purchaseRequisitionDto.PurchaseRequisitionGoods = purchaseRequisitionGoods
+                    .Select(good => new PurchaseRequisitionGoodDto
+                    {
+                        Id = _cypherService.Encrypt(good.Id),
+                        PlainId = good.Id,
+                        ItemDescription = good.ItemDescription,
+                        Quantity = good.Quantity,
+                        UnitPrice = good.UnitPrice,
+                        SystemAttachment = good.SystemAttachment != null
+                            ? new SystemAttachmentDto
+                            {
+                                Id = _cypherService.Encrypt(good.SystemAttachment.Id),
+                                FilePath = good.SystemAttachment.FilePath,
+                                SystemFileName = good.SystemAttachment.SystemFileName,
+                                CustomFileName = good.SystemAttachment.CustomFileName,
+                                OriginalFileName = good.SystemAttachment.OriginalFileName,
+                                FileSize = good.SystemAttachment.FileSize,
+                                ContentType = good.SystemAttachment.ContentType,
+                                FileExtension = good.SystemAttachment.FileExtension
+                            }
+                            : null,
+                        VendorUser = good.VendorUser != null
+                            ? new UserDto
+                            {
+                                Id = _cypherService.Encrypt(good.VendorUser.Id),
+                                FullName = good.VendorUser.FullName,
+                                FirstName = good.VendorUser.FirstName,
+                                LastName = good.VendorUser.LastName,
+                                Email = good.VendorUser.Email
+                            }
+                            : null
+                    }).ToList();
 
                 //get purchase requisition attachments
                 var purchaseRequisitionAttachments =
@@ -120,12 +238,12 @@ public class PurchaseRequisitionApiController : ControllerBase
                     }).ToList();
             }
 
-            // Step 3: If reference number is empty, get current user details
+            // Step 3: Get current user details
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
                 return Ok(new { success = false, message = "An error occurred while processing the request" });
 
-            var userDto = new UserDto
+            var currentUserDto = new UserDto
             {
                 Id = _cypherService.Encrypt(user.Id),
                 FullName = user.FullName,
@@ -146,7 +264,7 @@ public class PurchaseRequisitionApiController : ControllerBase
             // Step 7: Get offices in the department
             var offices = await _officeService.FindAllAsync();
 
-            //get current user's office, department, branch and organization from userOffice
+            //Get current user's office, department, branch and organization from userOffice
             if (purchaseRequisitionDto == null)
             {
                 var userOffice = await _officeService.FindOfficeByUserIdAsync(user.Id);
@@ -162,14 +280,14 @@ public class PurchaseRequisitionApiController : ControllerBase
                 }
             }
 
-            //get process by ID
+            //get process details (proc type: goods)
             var processId = ProcessConstant.PROC_PURCHASE_REQUISITION_OF_GOODS.GetProcessId()!;
             var currentProcess = await _processService.FindByIdAsync(processId);
             if (currentProcess == null)
                 return Ok(new { success = false, message = "Process not found" });
 
-            //get process 1st step Id
-            var currentStep = await _processService.GetFirstStepAsync(processId);
+            //get 1st step
+            var currentStep = await _processService.GetFirstStepByProcessIdAsync(processId);
             if (currentStep == null)
                 return Ok(new { success = false, message = "First step not found" });
 
@@ -180,15 +298,16 @@ public class PurchaseRequisitionApiController : ControllerBase
                 {
                     Id = _cypherService.Encrypt(currentProcess.Id),
                     Name = currentProcess.Name,
-                    Description = currentProcess.Description
+                    Description = currentProcess.Description,
                 },
+                task = taskDto,
                 currentStep = new WkfProcessStepDto
                 {
                     Id = _cypherService.Encrypt(currentStep.Id),
                     Name = currentStep.Name,
                     Description = currentStep.Description
                 },
-                user = userDto,
+                user = currentUserDto,
                 purchaseRequisition = purchaseRequisitionDto,
                 organizations = organizations.Select(organization => new OrganizationDto
                 {

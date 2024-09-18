@@ -35,6 +35,7 @@ public sealed class WkfTask
     public ApplicationUser? PreviousActioningUser { get; set; }
 
     [Required] public bool IsOpen { get; set; }
+    [Required] public bool IsCompleted { get; set; }
     [Required] public bool WasSentBack { get; set; }
     
     public string? SentBackAtStepId { get; set; }

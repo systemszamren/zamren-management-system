@@ -1,5 +1,3 @@
-using zamren_management_system.Areas.Security.Models;
-
 namespace zamren_management_system.Areas.Security.Dto;
 
 public class ModulePrivilegeDto

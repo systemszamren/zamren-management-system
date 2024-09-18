@@ -15,5 +15,6 @@ public class PurchaseRequisitionDto
     // public decimal? EstimatedCost { get; set; }
     // public string? EstimatedCostString { get; set; }
     public string? Justification { get; set; }
-    public List<PurchaseRequisitionAttachmentDto> PurchaseRequisitionAttachments { get; set; }
+    public List<PurchaseRequisitionGoodDto>? PurchaseRequisitionGoods { get; set; }
+    public List<PurchaseRequisitionAttachmentDto>? PurchaseRequisitionAttachments { get; set; }
 }

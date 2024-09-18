@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using zamren_management_system.Areas.Identity.Data;
 
 namespace zamren_management_system.Areas.Security.Models;

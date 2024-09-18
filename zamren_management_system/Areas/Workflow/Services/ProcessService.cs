@@ -48,7 +48,7 @@ public class ProcessService : IProcessService
     }
 
     //GetFirstStepIdAsync
-    public async Task<WkfProcessStep?> GetFirstStepAsync(string processId)
+    public async Task<WkfProcessStep?> GetFirstStepByProcessIdAsync(string processId)
     {
         return await _context.WkfProcessSteps
             .Where(s => s.ProcessId == processId && s.IsInitialStep)

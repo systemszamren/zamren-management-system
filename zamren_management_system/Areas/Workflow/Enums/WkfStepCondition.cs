@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace zamren_management_system.Areas.Workflow.Enums;
 
 public enum WkfStepCondition

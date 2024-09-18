@@ -1,5 +1,3 @@
-using zamren_management_system.Areas.Security.Dto;
-
 namespace zamren_management_system.Areas.Workflow.Dto;
 
 public class SlaHoursDto

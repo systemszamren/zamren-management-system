@@ -19,6 +19,7 @@ public class WkfTaskDto
     public UserDto? CurrentActioningUser { get; set; }
     public UserDto? PreviousActioningUser { get; set; }
     public bool? IsOpen { get; set; }
+    public bool? IsCompleted { get; set; }
     public bool? WasSentBack { get; set; }
     public WkfProcessStepDto? SentBackAtStep { get; set; }
     public List<WkfCommentDto>? Comments { get; set; }
